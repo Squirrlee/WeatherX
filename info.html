@@ -16,6 +16,9 @@
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"
     />
   </head>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+  <script type="module" src="./scripts/info.js"></script>
 
   <body>
     <!-- Navbar -->
@@ -123,6 +126,11 @@
 
     <section class="section">
       <h2 class="section-title">7 Day Forecast</h2>
+      <section class="chart-section">
+        <h2 class="section-title">Temperature Trend</h2>
+
+        <canvas id="weatherChart"></canvas>
+      </section>
 
       <div id="forecast-container" class="forecast-container"></div>
     </section>

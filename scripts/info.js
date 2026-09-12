@@ -114,6 +114,9 @@ async function getWeatherData() {
             data.forecast.forecastday
         );
 
+        renderWeatherChart(
+            data.forecast.forecastday
+        );
     } catch (error) {
 
         console.log(error);
@@ -373,6 +376,73 @@ function renderWeather(
             "#7b1fa2";
 
     }
+
+}
+
+function renderWeatherChart(
+    forecastDays
+) {
+
+    const labels =
+        forecastDays.map(
+            day => day.date
+        );
+
+    const temperatures =
+        forecastDays.map(
+            day => day.day.avgtemp_c
+        );
+
+    const ctx =
+        document
+            .getElementById(
+                "weatherChart"
+            );
+
+    new Chart(
+        ctx,
+        {
+            type: "line",
+
+            data: {
+
+                labels,
+
+                datasets: [
+
+                    {
+                        label:
+                            "Temperature °C",
+
+                        data:
+                            temperatures,
+
+                        borderColor:
+                            "#00bfff",
+
+                        backgroundColor:
+                            "rgba(0,191,255,0.2)",
+
+                        borderWidth:
+                            3,
+
+                        tension:
+                            0.4
+                    }
+
+                ]
+
+            },
+
+            options: {
+
+                responsive:
+                    true
+
+            }
+
+        }
+    );
 
 }
 
