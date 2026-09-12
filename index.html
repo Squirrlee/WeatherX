@@ -1,0 +1,100 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title>WeatherX</title>
+
+    <!-- Main CSS -->
+    <link rel="stylesheet" href="./styles/main.css" />
+
+    <!-- Home CSS -->
+    <link rel="stylesheet" href="./styles/home.css" />
+
+    <!-- Font Awesome -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"
+    />
+  </head>
+
+  <body>
+    <!-- Navbar -->
+
+    <header>
+      <nav>
+        <a href="./index.html" class="logo"> WeatherX </a>
+
+        <ul class="nav-links">
+          <li>
+            <a href="./index.html"> Home </a>
+          </li>
+
+          <li>
+            <a href="./search.html"> Search </a>
+          </li>
+        </ul>
+
+        <div class="auth-buttons">
+          <a href="./login.html">
+            <button class="btn btn-secondary">Login</button>
+          </a>
+
+          <a href="./register.html">
+            <button class="btn btn-primary">Register</button>
+          </a>
+        </div>
+      </nav>
+    </header>
+
+    <!-- Hero Section -->
+
+    <section class="hero-section">
+      <img src="./assets/hero.jpg" alt="Hero" class="hero-image" />
+
+      <div class="hero-overlay">
+        <h1>WeatherX</h1>
+
+        <p>Explore weather around the world</p>
+
+        <a href="./search.html">
+          <button class="btn btn-primary">Search Cities</button>
+        </a>
+      </div>
+    </section>
+
+    <section class="section">
+      <h2 class="section-title">Your Location</h2>
+
+      <div id="my-location" class="city-container"></div>
+    </section>
+
+    <!-- Featured Cities -->
+
+    <section class="section">
+      <h2 class="section-title">Featured Cities</h2>
+
+      <div id="featured-cities" class="city-container"></div>
+    </section>
+
+    <!-- Air Quality Ranking -->
+
+    <section class="section">
+      <h2 class="section-title">Air Quality Ranking</h2>
+
+      <div id="aqi-cities" class="city-container"></div>
+    </section>
+
+    <!-- Footer -->
+
+    <footer>
+      <p>© 2026 WeatherX</p>
+    </footer>
+
+    <!-- JS -->
+
+    <script type="module" src="./scripts/home.js"></script>
+  </body>
+</html>

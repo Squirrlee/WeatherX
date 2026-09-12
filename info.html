@@ -1,0 +1,135 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title>Weather Details | WeatherX</title>
+
+    <link rel="stylesheet" href="./styles/main.css" />
+
+    <link rel="stylesheet" href="./styles/info.css" />
+
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"
+    />
+  </head>
+
+  <body>
+    <!-- Navbar -->
+
+    <header>
+      <nav>
+        <a href="./index.html" class="logo"> WeatherX </a>
+
+        <ul class="nav-links">
+          <li>
+            <a href="./index.html"> Home </a>
+          </li>
+
+          <li>
+            <a href="./search.html"> Search </a>
+          </li>
+        </ul>
+
+        <div class="auth-buttons">
+          <a href="./login.html">
+            <button class="btn btn-secondary">Login</button>
+          </a>
+
+          <a href="./register.html">
+            <button class="btn btn-primary">Register</button>
+          </a>
+        </div>
+      </nav>
+    </header>
+
+    <!-- Hero -->
+
+    <section class="info-hero">
+      <div class="info-overlay">
+        <h1 id="city-name">Loading...</h1>
+
+        <h2 id="temperature">--</h2>
+
+        <p id="condition">Loading...</p>
+      </div>
+    </section>
+
+    <!-- Weather Stats -->
+
+    <section class="section">
+      <h2 class="section-title">Weather Information</h2>
+
+      <div class="stats-grid">
+        <div class="stat-card">
+          <h3>Humidity</h3>
+          <p id="humidity">--</p>
+        </div>
+
+        <div class="stat-card">
+          <h3>Wind</h3>
+          <p id="wind">--</p>
+        </div>
+
+        <div class="stat-card">
+          <h3>Pressure</h3>
+          <p id="pressure">--</p>
+        </div>
+
+        <div class="stat-card">
+          <h3>UV Index</h3>
+          <p id="uv">--</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Air Quality -->
+
+    <section class="section">
+      <h2 class="section-title">Air Quality</h2>
+
+      <div class="stats-grid">
+        <div class="stat-card">
+          <h3>AQI</h3>
+          <p id="aqi">--</p>
+        </div>
+
+        <div class="stat-card">
+          <h3>PM2.5</h3>
+          <p id="pm25">--</p>
+        </div>
+
+        <div class="stat-card">
+          <h3>PM10</h3>
+          <p id="pm10">--</p>
+        </div>
+
+        <div class="stat-card">
+          <h3>CO</h3>
+          <p id="co">--</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Forecast -->
+
+    <section class="section">
+      <h2 class="section-title">7 Day Forecast</h2>
+
+      <div id="forecast-container" class="forecast-container"></div>
+    </section>
+
+    <!-- Footer -->
+
+    <footer>
+      <p>© 2026 WeatherX</p>
+    </footer>
+
+    <!-- JS -->
+
+    <script type="module" src="./scripts/info.js"></script>
+  </body>
+</html>
