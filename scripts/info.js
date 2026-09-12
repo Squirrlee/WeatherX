@@ -67,6 +67,11 @@ const aqiStatus =
         "aqi-status"
     );
 
+const aqiProgress =
+    document.getElementById(
+        "aqi-progress"
+    );
+
 const pm25 =
     document.getElementById(
         "pm25"
@@ -156,6 +161,8 @@ function getWeatherBackground(
         condition.includes("fog")
         ||
         condition.includes("mist")
+        ||
+        condition.includes("haze")
     ) {
         return "./assets/fog.jpg";
     }
@@ -212,6 +219,34 @@ function getAQIInfo(
                 text: "⚫ Hazardous",
                 className: "aqi-hazardous"
             };
+
+    }
+
+}
+
+function getAQIPercentage(
+    aqi
+) {
+
+    switch (aqi) {
+
+        case 1:
+            return 16;
+
+        case 2:
+            return 33;
+
+        case 3:
+            return 50;
+
+        case 4:
+            return 66;
+
+        case 5:
+            return 83;
+
+        default:
+            return 100;
 
     }
 
@@ -274,6 +309,19 @@ function renderWeather(
     aqiStatus.className =
         aqiData.className;
 
+    const aqiValue =
+        data.current.air_quality[
+            "us-epa-index"
+        ];
+
+    const percentage =
+        getAQIPercentage(
+            aqiValue
+        );
+
+    aqiProgress.style.width =
+        `${percentage}%`;
+
     pm25.textContent =
         data.current.air_quality.pm2_5.toFixed(
             1
@@ -288,6 +336,43 @@ function renderWeather(
         data.current.air_quality.co.toFixed(
             1
         );
+
+    if (aqiValue === 1) {
+
+        aqiProgress.style.background =
+            "#4caf50";
+
+    }
+    else if (aqiValue === 2) {
+
+        aqiProgress.style.background =
+            "#ffeb3b";
+
+    }
+    else if (aqiValue === 3) {
+
+        aqiProgress.style.background =
+            "#ff9800";
+
+    }
+    else if (aqiValue === 4) {
+
+        aqiProgress.style.background =
+            "#f44336";
+
+    }
+    else if (aqiValue === 5) {
+
+        aqiProgress.style.background =
+            "#9c27b0";
+
+    }
+    else {
+
+        aqiProgress.style.background =
+            "#7b1fa2";
+
+    }
 
 }
 
