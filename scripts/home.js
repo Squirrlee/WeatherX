@@ -3,6 +3,11 @@ import {
     BASE_URL
 } from "./config.js";
 
+const favoriteCitiesContainer =
+    document.getElementById(
+        "favorite-cities"
+    );
+
 const myLocationContainer =
     document.getElementById(
         "my-location"
@@ -37,6 +42,38 @@ async function getCityWeather(city) {
         await response.json();
 
     return data;
+}
+
+function saveFavoriteCity(
+    cityName
+) {
+
+    let favorites =
+        JSON.parse(
+            localStorage.getItem(
+                "favorites"
+            )
+        ) || [];
+
+    if (
+        favorites.includes(
+            cityName
+        )
+    ) {
+        return;
+    }
+
+    favorites.push(
+        cityName
+    );
+
+    localStorage.setItem(
+        "favorites",
+        JSON.stringify(
+            favorites
+        )
+    );
+
 }
 
 function getAQIStatus(aqi) {
@@ -101,12 +138,30 @@ function createCityCard(data) {
                         ${condition}
                     </p>
 
+                    <div class="card-actions">
+
+                        <button
+                            class="favorite-btn"
+                            data-city="${city}"
+                        >
+                            ❤️ Favorite
+                        </button>
+
+                        <button
+                            class="remove-btn"
+                            data-city="${city}"
+                        >
+                            ❌ Remove
+                        </button>
+
+                    </div>
+
                 </div>
 
             </div>
 
         </a>
-    `;
+        `;
 }
 
 function createAQICard(data) {
@@ -159,6 +214,76 @@ function createAQICard(data) {
     `;
 }
 
+function removeFavoriteCity(
+    cityName
+) {
+
+    let favorites =
+        JSON.parse(
+            localStorage.getItem(
+                "favorites"
+            )
+        ) || [];
+
+    favorites =
+        favorites.filter(
+            city =>
+                city !== cityName
+        );
+
+    localStorage.setItem(
+        "favorites",
+        JSON.stringify(
+            favorites
+        )
+    );
+
+}
+
+document.addEventListener(
+    "click",
+    (event) => {
+
+        if (
+            event.target.classList.contains(
+                "favorite-btn"
+            )
+        ) {
+
+            event.preventDefault();
+
+            const city =
+                event.target.dataset.city;
+
+            saveFavoriteCity(
+                city
+            );
+
+            renderFavorites();
+
+        }
+        if (
+            event.target.classList.contains(
+                "remove-btn"
+            )
+        ) {
+
+            event.preventDefault();
+
+            const city =
+                event.target.dataset.city;
+
+            removeFavoriteCity(
+                city
+            );
+
+            renderFavorites();
+
+        }
+
+    }
+);
+
 async function renderFeaturedCities() {
 
     featuredCitiesContainer.innerHTML =
@@ -203,31 +328,6 @@ async function renderAQICities() {
                 data
             );
     }
-}
-
-async function init() {
-
-    await renderMyLocation();
-
-    await renderFeaturedCities();
-
-    await renderAQICities();
-}       
-init();
-
-function getCurrentPosition() {
-
-    return new Promise(
-        (resolve, reject) => {
-
-            navigator.geolocation.getCurrentPosition(
-                resolve,
-                reject
-            );
-
-        }
-    );
-
 }
 
 async function renderMyLocation() {
@@ -279,3 +379,62 @@ async function renderMyLocation() {
     }
 
 }
+
+async function renderFavorites() {
+
+    const favorites =
+        JSON.parse(
+            localStorage.getItem(
+                "favorites"
+            )
+        ) || [];
+
+    favoriteCitiesContainer.innerHTML =
+        "";
+
+    for (
+        let i = 0;
+        i < favorites.length;
+        i++
+    ) {
+
+        const data =
+            await getCityWeather(
+                favorites[i]
+            );
+
+        favoriteCitiesContainer.innerHTML +=
+            createCityCard(
+                data
+            );
+    }
+
+}
+
+function getCurrentPosition() {
+
+    return new Promise(
+        (resolve, reject) => {
+
+            navigator.geolocation.getCurrentPosition(
+                resolve,
+                reject
+            );
+
+        }
+    );
+
+}
+
+async function init() {
+
+    await renderMyLocation();
+
+    await renderFavorites();
+
+    await renderFeaturedCities();
+
+    await renderAQICities();
+
+}     
+init();

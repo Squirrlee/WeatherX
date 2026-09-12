@@ -158,3 +158,33 @@
     }
 
 }
+
+.aqi-good {
+    color: #4caf50;
+    font-weight: bold;
+}
+
+.aqi-moderate {
+    color: #ffeb3b;
+    font-weight: bold;
+}
+
+.aqi-sensitive {
+    color: #ff9800;
+    font-weight: bold;
+}
+
+.aqi-unhealthy {
+    color: #f44336;
+    font-weight: bold;
+}
+
+.aqi-very-unhealthy {
+    color: #9c27b0;
+    font-weight: bold;
+}
+
+.aqi-hazardous {
+    color: #7b1fa2;
+    font-weight: bold;
+}

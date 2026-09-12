@@ -28,6 +28,11 @@ const condition =
         "condition"
     );
 
+const infoHero =
+    document.getElementById(
+        "info-hero"
+    );
+
 /* Weather Info */
 
 const humidity =
@@ -55,6 +60,11 @@ const uv =
 const aqi =
     document.getElementById(
         "aqi"
+    );
+
+const aqiStatus =
+    document.getElementById(
+        "aqi-status"
     );
 
 const pm25 =
@@ -107,6 +117,106 @@ async function getWeatherData() {
 
 }
 
+function getWeatherBackground(
+    condition
+) {
+
+    condition =
+        condition.toLowerCase();
+
+    if (
+        condition.includes("thunder")
+        ||
+        condition.includes("storm")
+    ) {
+        return "./assets/thunder.jpg";
+    }
+
+    if (
+        condition.includes("snow")
+        ||
+        condition.includes("blizzard")
+        ||
+        condition.includes("sleet")
+    ) {
+        return "./assets/snow.jpg";
+    }
+
+    if (
+        condition.includes("rain")
+        ||
+        condition.includes("drizzle")
+        ||
+        condition.includes("shower")
+    ) {
+        return "./assets/rain.jpg";
+    }
+
+    if (
+        condition.includes("fog")
+        ||
+        condition.includes("mist")
+    ) {
+        return "./assets/fog.jpg";
+    }
+
+    if (
+        condition.includes("cloud")
+        ||
+        condition.includes("overcast")
+    ) {
+        return "./assets/cloudy.jpg";
+    }
+
+    return "./assets/sunny.jpg";
+}
+
+function getAQIInfo(
+    index
+) {
+
+    switch (index) {
+
+        case 1:
+            return {
+                text: "🟢 Good",
+                className: "aqi-good"
+            };
+
+        case 2:
+            return {
+                text: "🟡 Moderate",
+                className: "aqi-moderate"
+            };
+
+        case 3:
+            return {
+                text: "🟠 Sensitive",
+                className: "aqi-sensitive"
+            };
+
+        case 4:
+            return {
+                text: "🔴 Unhealthy",
+                className: "aqi-unhealthy"
+            };
+
+        case 5:
+            return {
+                text: "🟣 Very Unhealthy",
+                className: "aqi-very-unhealthy"
+            };
+
+        default:
+            return {
+                text: "⚫ Hazardous",
+                className: "aqi-hazardous"
+            };
+
+    }
+
+}
+
 function renderWeather(
     data
 ) {
@@ -119,6 +229,20 @@ function renderWeather(
 
     condition.textContent =
         data.current.condition.text;
+
+    const backgroundImage =
+        getWeatherBackground(
+            data.current.condition.text
+        );
+
+    infoHero.style.backgroundImage =
+    `
+    linear-gradient(
+    rgba(0,0,0,0.4),
+    rgba(0,0,0,0.9)
+    ),
+    url('${backgroundImage}')
+    `;
 
     humidity.textContent =
         `${data.current.humidity}%`;
@@ -136,6 +260,19 @@ function renderWeather(
         data.current.air_quality[
             "us-epa-index"
         ];
+    
+    const aqiData =
+        getAQIInfo(
+            data.current.air_quality[
+                "us-epa-index"
+            ]
+        );
+
+    aqiStatus.textContent =
+        aqiData.text;
+
+    aqiStatus.className =
+        aqiData.className;
 
     pm25.textContent =
         data.current.air_quality.pm2_5.toFixed(
