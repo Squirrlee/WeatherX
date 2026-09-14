@@ -62,7 +62,8 @@
 /* City Card */
 
 .city-card {
-    background: #222;
+
+    background: var(--card-color);
 
     border-radius: 12px;
 
@@ -93,7 +94,9 @@
 }
 
 .city-card-content p {
-    color: #ccc;
+
+    color: var(--text-color);
+
     margin-bottom: 8px;
 }
 
@@ -109,6 +112,44 @@
 
 .aqi-bad {
     color: #ff4444;
+}
+
+/* Remove button */
+
+.card-actions {
+    display: flex;
+    gap: 10px;
+    margin-top: 10px;
+}
+
+.remove-btn {
+
+    flex: 1;
+
+    border: none;
+
+    padding: 10px;
+
+    border-radius: 8px;
+
+    cursor: pointer;
+
+    background: var(--bg-color);
+
+    color: var(--text-color);
+
+    font-weight: bold;
+
+    transition: 0.3s;
+}
+
+.remove-btn:hover {
+
+    opacity: 0.8;
+}
+
+.favorite-btn {
+    flex: 1;
 }
 
 /* Mobile */
@@ -134,35 +175,8 @@
 
 }
 
-/* Remove button */
-.card-actions {
-    display: flex;
-    gap: 10px;
-    margin-top: 10px;
-}
+#travel-ranking {
 
-.remove-btn {
-    flex: 1;
+    margin-top: 20px;
 
-    border: none;
-
-    padding: 10px;
-
-    border-radius: 8px;
-
-    cursor: pointer;
-
-    background: #444;
-
-    color: white;
-
-    font-weight: bold;
-}
-
-.remove-btn:hover {
-    background: #666;
-}
-
-.favorite-btn {
-    flex: 1;
 }

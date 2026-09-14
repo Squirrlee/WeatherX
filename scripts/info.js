@@ -3,6 +3,20 @@ import {
     BASE_URL
 } from "./config.js";
 
+const currentUser =
+    JSON.parse(
+        localStorage.getItem(
+            "currentUser"
+        )
+    );
+
+if (!currentUser) {
+
+    window.location.href =
+        "login.html";
+
+}
+
 const params =
     new URLSearchParams(
         window.location.search
@@ -55,6 +69,16 @@ const uv =
         "uv"
     );
 
+const sunrise =
+    document.getElementById(
+        "sunrise"
+    );
+
+const sunset =
+    document.getElementById(
+        "sunset"
+    );
+
 /* AQI */
 
 const aqi =
@@ -87,6 +111,61 @@ const co =
         "co"
     );
 
+const highestTemp =
+    document.getElementById(
+        "highest-temp"
+    );
+
+const lowestTemp =
+    document.getElementById(
+        "lowest-temp"
+    );
+
+const averageTemp =
+    document.getElementById(
+        "average-temp"
+    );
+
+const maxWind =
+    document.getElementById(
+        "max-wind"
+    );
+
+const uvValue =
+    document.getElementById(
+        "uv-value"
+    );
+
+const uvStatus =
+    document.getElementById(
+        "uv-status"
+    );
+
+const uvProgress =
+    document.getElementById(
+        "uv-progress"
+    );
+
+const travelScore =
+    document.getElementById(
+        "travel-score"
+    );
+
+const travelStars =
+    document.getElementById(
+        "travel-stars"
+    );
+
+const travelStatus =
+    document.getElementById(
+        "travel-status"
+    );
+
+const aiAdvice =
+    document.getElementById(
+        "ai-advice"
+    );
+
 /* Forecast */
 
 const forecastContainer =
@@ -117,11 +196,323 @@ async function getWeatherData() {
         renderWeatherChart(
             data.forecast.forecastday
         );
+
+        renderStatistics(
+            data.forecast.forecastday
+        );
+
+        renderSunInfo(
+            data.forecast.forecastday
+        );
+
+        renderUV(
+            data
+        );
+
+        renderTravelScore(
+            data
+        );
+
+        renderAIAdvice(
+            data
+        );
     } catch (error) {
 
         console.log(error);
 
     }
+
+}
+
+function renderAIAdvice(
+    data
+) {
+
+    let advice = [];
+
+    const temp =
+        data.current.temp_c;
+
+    const uv =
+        data.current.uv;
+
+    const aqi =
+        data.current.air_quality[
+            "us-epa-index"
+        ];
+
+    const condition =
+        data.current.condition.text
+            .toLowerCase();
+
+    if (temp >= 30) {
+
+        advice.push(
+            "👕 Nên mặc áo mỏng"
+        );
+
+    }
+    else if (temp <= 18) {
+
+        advice.push(
+            "🧥 Nên mang áo khoác"
+        );
+
+    }
+
+    if (uv >= 7) {
+
+        advice.push(
+            "🧴 UV cao, nên dùng kem chống nắng"
+        );
+
+        advice.push(
+            "😎 Đeo kính râm khi ra ngoài"
+        );
+
+    }
+
+    if (aqi >= 4) {
+
+        advice.push(
+            "😷 Chất lượng không khí kém, nên đeo khẩu trang"
+        );
+
+    }
+
+    if (
+        condition.includes(
+            "rain"
+        )
+    ) {
+
+        advice.push(
+            "☔ Nên mang theo ô"
+        );
+
+    }
+    else {
+
+        advice.push(
+            "🌤️ Không cần mang ô"
+        );
+
+    }
+
+    if (
+        temp >= 20
+        &&
+        temp <= 30
+        &&
+        aqi <= 2
+    ) {
+
+        advice.push(
+            "🏃 Thích hợp hoạt động ngoài trời"
+        );
+
+    }
+
+    aiAdvice.innerHTML =
+        advice
+            .map(
+                item =>
+                    `<div class="ai-item">${item}</div>`
+            )
+            .join("");
+
+}
+
+function renderTravelScore(
+    data
+) {
+
+    let score = 0;
+
+    const temp =
+        data.current.temp_c;
+
+    const aqi =
+        data.current.air_quality[
+            "us-epa-index"
+        ];
+
+    const uv =
+        data.current.uv;
+
+    const condition =
+        data.current.condition.text
+            .toLowerCase();
+
+    // Temperature
+
+    if (
+        temp >= 18
+        &&
+        temp <= 30
+    ) {
+        score += 30;
+    }
+
+    // AQI
+
+    if (aqi <= 2) {
+
+        score += 30;
+
+    }
+    else if (aqi <= 3) {
+
+        score += 20;
+
+    }
+
+    // UV
+
+    if (uv <= 5) {
+
+        score += 20;
+
+    }
+    else if (uv <= 7) {
+
+        score += 10;
+
+    }
+
+    // Rain
+
+    if (
+        !condition.includes(
+            "rain"
+        )
+    ) {
+
+        score += 20;
+
+    }
+
+    travelScore.textContent =
+        `${score}/100`;
+
+    if (score >= 80) {
+
+        travelStars.textContent =
+            "⭐⭐⭐⭐⭐";
+
+        travelStatus.textContent =
+            "Great For Travel";
+
+    }
+    else if (score >= 60) {
+
+        travelStars.textContent =
+            "⭐⭐⭐⭐☆";
+
+        travelStatus.textContent =
+            "Good For Travel";
+
+    }
+    else if (score >= 40) {
+
+        travelStars.textContent =
+            "⭐⭐⭐☆☆";
+
+        travelStatus.textContent =
+            "Average";
+
+    }
+    else {
+
+        travelStars.textContent =
+            "⭐⭐☆☆☆";
+
+        travelStatus.textContent =
+            "Not Recommended";
+
+    }
+
+}
+
+function getUVInfo(
+    uv
+) {
+
+    if (uv <= 2) {
+
+        return {
+            text: "🟢 Low",
+            color: "#4caf50"
+        };
+
+    }
+
+    if (uv <= 5) {
+
+        return {
+            text: "🟡 Moderate",
+            color: "#ffeb3b"
+        };
+
+    }
+
+    if (uv <= 7) {
+
+        return {
+            text: "🟠 High",
+            color: "#ff9800"
+        };
+
+    }
+
+    if (uv <= 10) {
+
+        return {
+            text: "🔴 Very High",
+            color: "#f44336"
+        };
+
+    }
+
+    return {
+        text: "🟣 Extreme",
+        color: "#9c27b0"
+    };
+
+}
+
+function renderUV(
+    data
+) {
+
+    const uv =
+        data.current.uv;
+
+    const uvInfo =
+        getUVInfo(
+            uv
+        );
+
+    uvValue.textContent =
+        uv;
+
+    uvStatus.textContent =
+        uvInfo.text;
+
+    uvStatus.style.color =
+        uvInfo.color;
+
+    const percentage =
+        Math.min(
+            (uv / 12) * 100,
+            100
+        );
+
+    uvProgress.style.width =
+        `${percentage}%`;
+
+    uvProgress.style.background =
+        uvInfo.color;
 
 }
 
@@ -179,6 +570,85 @@ function getWeatherBackground(
     }
 
     return "./assets/sunny.jpg";
+}
+
+function renderSunInfo(
+    forecastDays
+) {
+
+    sunrise.textContent =
+        forecastDays[0].astro.sunrise;
+
+    sunset.textContent =
+        forecastDays[0].astro.sunset;
+
+}
+
+function renderStatistics(
+    forecastDays
+) {
+
+    const maxTemps =
+        forecastDays.map(
+            day =>
+                day.day.maxtemp_c
+        );
+
+    const minTemps =
+        forecastDays.map(
+            day =>
+                day.day.mintemp_c
+        );
+
+    const avgTemps =
+        forecastDays.map(
+            day =>
+                day.day.avgtemp_c
+        );
+
+    const winds =
+        forecastDays.map(
+            day =>
+                day.day.maxwind_kph
+        );
+
+    const highest =
+        Math.max(
+            ...maxTemps
+        );
+
+    const lowest =
+        Math.min(
+            ...minTemps
+        );
+
+    const average =
+        (
+            avgTemps.reduce(
+                (a, b) => a + b,
+                0
+            )
+            /
+            avgTemps.length
+        ).toFixed(1);
+
+    const wind =
+        Math.max(
+            ...winds
+        );
+
+    highestTemp.textContent =
+        `${highest}°C`;
+
+    lowestTemp.textContent =
+        `${lowest}°C`;
+
+    averageTemp.textContent =
+        `${average}°C`;
+
+    maxWind.textContent =
+        `${wind} km/h`;
+
 }
 
 function getAQIInfo(
@@ -388,20 +858,25 @@ function renderWeatherChart(
             day => day.date
         );
 
-    const temperatures =
+    const maxTemps =
         forecastDays.map(
-            day => day.day.avgtemp_c
+            day => day.day.maxtemp_c
+        );
+
+    const minTemps =
+        forecastDays.map(
+            day => day.day.mintemp_c
         );
 
     const ctx =
-        document
-            .getElementById(
-                "weatherChart"
-            );
+        document.getElementById(
+            "weatherChart"
+        );
 
     new Chart(
         ctx,
         {
+
             type: "line",
 
             data: {
@@ -411,11 +886,34 @@ function renderWeatherChart(
                 datasets: [
 
                     {
+
                         label:
-                            "Temperature °C",
+                            "Max Temp °C",
 
                         data:
-                            temperatures,
+                            maxTemps,
+
+                        borderColor:
+                            "#ff4d4d",
+
+                        backgroundColor:
+                            "rgba(255,77,77,0.2)",
+
+                        borderWidth:
+                            3,
+
+                        tension:
+                            0.4
+
+                    },
+
+                    {
+
+                        label:
+                            "Min Temp °C",
+
+                        data:
+                            minTemps,
 
                         borderColor:
                             "#00bfff",
@@ -428,6 +926,7 @@ function renderWeatherChart(
 
                         tension:
                             0.4
+
                     }
 
                 ]
@@ -437,7 +936,48 @@ function renderWeatherChart(
             options: {
 
                 responsive:
-                    true
+                    true,
+
+                plugins: {
+
+                    legend: {
+
+                        labels: {
+
+                            color:
+                                "white"
+
+                        }
+
+                    }
+
+                },
+
+                scales: {
+
+                    x: {
+
+                        ticks: {
+
+                            color:
+                                "white"
+
+                        }
+
+                    },
+
+                    y: {
+
+                        ticks: {
+
+                            color:
+                                "white"
+
+                        }
+
+                    }
+
+                }
 
             }
 

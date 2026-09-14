@@ -16,7 +16,25 @@
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"
     />
   </head>
+  <script src="./scripts/theme.js"></script>
+  <!-- AI Chat -->
 
+  <div id="chat-toggle">🤖</div>
+
+  <div id="chat-box">
+    <div id="chat-header">Weather Assistant</div>
+
+    <div id="chat-messages">
+      <div class="bot-message">Xin chào 👋</div>
+    </div>
+
+    <div id="chat-input-area">
+      <input type="text" id="chat-input" placeholder="Ask something..." />
+
+      <button id="send-btn">Send</button>
+    </div>
+  </div>
+  <script src="scripts/chatbot.js"></script>
   <body>
     <!-- Navbar -->
 
@@ -33,6 +51,8 @@
             <a href="./search.html"> Search </a>
           </li>
         </ul>
+
+        <button id="theme-toggle" class="btn btn-secondary">🌙</button>
 
         <div class="auth-buttons">
           <a href="./login.html">

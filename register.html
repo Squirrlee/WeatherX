@@ -5,7 +5,7 @@
 
     <meta charset="UTF-8">
 
-    <title>Login - WeatherX</title>
+    <title>Register - WeatherX</title>
 
     <link
         rel="stylesheet"
@@ -14,7 +14,7 @@
 
     <link
         rel="stylesheet"
-        href="styles/login.css"
+        href="styles/register.css"
     >
 
 </head>
@@ -23,9 +23,16 @@
 
     <div class="auth-container">
 
-        <form id="login-form">
+        <form id="register-form">
 
-            <h1>Login</h1>
+            <h1>Register</h1>
+
+            <input
+                type="text"
+                id="username"
+                placeholder="Username"
+                required
+            >
 
             <input
                 type="email"
@@ -45,15 +52,15 @@
                 type="submit"
                 class="btn btn-primary"
             >
-                Login
+                Register
             </button>
 
             <p>
 
-                Don't have an account?
+                Already have an account?
 
-                <a href="register.html">
-                    Register
+                <a href="login.html">
+                    Login
                 </a>
 
             </p>
@@ -62,7 +69,7 @@
 
     </div>
 
-    <script src="scripts/login.js"></script>
+    <script src="scripts/register.js"></script>
 
 </body>
 

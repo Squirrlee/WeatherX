@@ -19,7 +19,25 @@
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
   <script type="module" src="./scripts/info.js"></script>
+  <script src="./scripts/theme.js"></script>
+  <!-- AI Chat -->
 
+  <div id="chat-toggle">🤖</div>
+
+  <div id="chat-box">
+    <div id="chat-header">Weather Assistant</div>
+
+    <div id="chat-messages">
+      <div class="bot-message">Xin chào 👋</div>
+    </div>
+
+    <div id="chat-input-area">
+      <input type="text" id="chat-input" placeholder="Ask something..." />
+
+      <button id="send-btn">Send</button>
+    </div>
+  </div>
+  <script src="scripts/chatbot.js"></script>
   <body>
     <!-- Navbar -->
 
@@ -36,6 +54,8 @@
             <a href="./search.html"> Search </a>
           </li>
         </ul>
+
+        <button id="theme-toggle" class="btn btn-secondary">🌙</button>
 
         <div class="auth-buttons">
           <a href="./login.html">
@@ -122,6 +142,38 @@
       </div>
     </section>
 
+    <section class="sun-section">
+      <h2 class="section-title">Sun Information</h2>
+
+      <div class="sun-grid">
+        <div class="sun-card">
+          <h3>🌅 Sunrise</h3>
+
+          <p id="sunrise">--</p>
+        </div>
+
+        <div class="sun-card">
+          <h3>🌇 Sunset</h3>
+
+          <p id="sunset">--</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="uv-section">
+      <h2 class="section-title">UV Index</h2>
+
+      <div class="uv-card">
+        <p id="uv-value">--</p>
+
+        <p id="uv-status">Loading...</p>
+
+        <div class="uv-bar">
+          <div id="uv-progress" class="uv-progress"></div>
+        </div>
+      </div>
+    </section>
+
     <!-- Forecast -->
 
     <section class="section">
@@ -133,6 +185,56 @@
       </section>
 
       <div id="forecast-container" class="forecast-container"></div>
+    </section>
+
+    <section class="stats-section">
+      <h2 class="section-title">Weather Statistics</h2>
+
+      <div class="stats-grid">
+        <div class="stat-card">
+          <h3>Highest Temp</h3>
+
+          <p id="highest-temp">--</p>
+        </div>
+
+        <div class="stat-card">
+          <h3>Lowest Temp</h3>
+
+          <p id="lowest-temp">--</p>
+        </div>
+
+        <div class="stat-card">
+          <h3>Average Temp</h3>
+
+          <p id="average-temp">--</p>
+        </div>
+
+        <div class="stat-card">
+          <h3>Max Wind</h3>
+
+          <p id="max-wind">--</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="travel-section">
+      <h2 class="section-title">Travel Score</h2>
+
+      <div class="travel-card">
+        <h3 id="travel-score">--</h3>
+
+        <p id="travel-stars">--</p>
+
+        <p id="travel-status">--</p>
+      </div>
+    </section>
+
+    <section class="section ai-section">
+      <h2 class="section-title">🤖 AI Weather Assistant</h2>
+
+      <div class="ai-card">
+        <div id="ai-advice"></div>
+      </div>
     </section>
 
     <!-- Footer -->

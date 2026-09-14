@@ -23,6 +23,27 @@ const aqiCitiesContainer =
         "aqi-cities"
     );
 
+const rankingContainer =
+    document.getElementById(
+        "travel-ranking"
+    );
+
+const travelCities = [
+
+    "Tokyo",
+    "Seoul",
+    "Paris",
+    "London",
+    "Singapore",
+    "Sydney",
+    "Hanoi",
+    "Ho Chi Minh City",
+    "New York",
+    "Bangkok",
+    "Dubai"
+
+];
+
 const cityList = [
     "Hanoi",
     "Tokyo",
@@ -31,6 +52,43 @@ const cityList = [
     "New York",
     "Sydney"
 ];
+
+const userName =
+    document.getElementById(
+        "user-name"
+    );
+
+const logoutBtn =
+    document.getElementById(
+        "logout-btn"
+    );
+
+const currentUser =
+    JSON.parse(
+        localStorage.getItem(
+            "currentUser"
+        )
+    );
+
+if (currentUser) {
+
+    userName.textContent =
+        `👤 ${currentUser.username}`;
+
+}
+
+logoutBtn.addEventListener(
+    "click",
+    function () {
+
+        localStorage.removeItem(
+            "currentUser"
+        );
+
+        location.reload();
+
+    }
+);
 
 async function getCityWeather(city) {
 
@@ -87,6 +145,175 @@ function getAQIStatus(aqi) {
     }
 
     return "Unhealthy";
+}
+
+function calculateTravelScore(
+    data
+) {
+
+    let score = 0;
+
+    const temp =
+        data.current.temp_c;
+
+    const aqi =
+        data.current.air_quality[
+            "us-epa-index"
+        ];
+
+    const uv =
+        data.current.uv;
+
+    const condition =
+        data.current.condition.text
+            .toLowerCase();
+
+    if (
+        temp >= 18
+        &&
+        temp <= 30
+    ) {
+
+        score += 30;
+
+    }
+
+    if (aqi <= 2) {
+
+        score += 30;
+
+    }
+    else if (aqi <= 3) {
+
+        score += 20;
+
+    }
+
+    if (uv <= 5) {
+
+        score += 20;
+
+    }
+    else if (uv <= 7) {
+
+        score += 10;
+
+    }
+
+    if (
+        !condition.includes(
+            "rain"
+        )
+    ) {
+
+        score += 20;
+
+    }
+
+    return score;
+
+}
+
+async function loadTravelRanking() {
+
+    const results = [];
+
+    for (
+        const city
+        of travelCities
+    ) {
+
+        try {
+
+            const response =
+                await fetch(
+
+`${BASE_URL}/current.json?key=${API_KEY}&q=${city}&aqi=yes`
+
+                );
+
+            const data =
+                await response.json();
+
+            const score =
+                calculateTravelScore(
+                    data
+                );
+
+            results.push({
+
+                city,
+
+                score,
+
+                temp:
+                    data.current.temp_c
+
+            });
+
+        }
+        catch (error) {
+
+            console.log(
+                error
+            );
+
+        }
+
+    }
+
+    results.sort(
+        (
+            a,
+            b
+        ) =>
+            b.score - a.score
+    );
+
+    renderTravelRanking(
+        results
+    );
+
+}
+
+function renderTravelRanking(
+    cities
+) {
+
+    rankingContainer.innerHTML =
+        "";
+
+    cities.forEach(
+        (
+            city,
+            index
+        ) => {
+
+            rankingContainer.innerHTML += `
+
+<div class="city-card">
+
+<h3>
+#${index + 1}
+${city.city}
+</h3>
+
+<p>
+Travel Score:
+${city.score}/100
+</p>
+
+<p>
+🌡️ ${city.temp}°C
+</p>
+
+</div>
+
+`;
+
+        }
+    );
+
 }
 
 function createCityCard(data) {
@@ -425,6 +652,8 @@ function getCurrentPosition() {
     );
 
 }
+
+loadTravelRanking();
 
 async function init() {
 
