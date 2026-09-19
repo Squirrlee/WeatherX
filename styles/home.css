@@ -1,4 +1,6 @@
-/* Hero Section */
+/* =========================
+   HERO
+========================= */
 
 .hero-section {
     position: relative;
@@ -12,6 +14,20 @@
     object-fit: cover;
 }
 
+.hero-section::before {
+    content: "";
+
+    position: absolute;
+
+    inset: 0;
+
+    background:
+        linear-gradient(
+            rgba(0,0,0,0.35),
+            rgba(0,0,0,0.75)
+        );
+}
+
 .hero-overlay {
     position: absolute;
 
@@ -20,32 +36,77 @@
 
     transform: translateY(-50%);
 
-    max-width: 600px;
+    max-width: 650px;
+
+    z-index: 2;
 }
 
 .hero-overlay h1 {
     font-size: 72px;
+
+    line-height: 1.1;
+
     margin-bottom: 20px;
 }
 
 .hero-overlay p {
-    font-size: 24px;
+    font-size: 22px;
+
+    color: #e0e0e0;
+
     margin-bottom: 30px;
-    color: #ddd;
 }
 
-/* Sections */
+.hero-buttons {
+    display: flex;
+    gap: 15px;
+}
+
+/* =========================
+   USER PANEL
+========================= */
+
+.user-panel {
+    margin-top: 90px;
+
+    padding: 0 80px;
+
+    display: flex;
+
+    justify-content: flex-end;
+
+    align-items: center;
+
+    gap: 15px;
+}
+
+#user-name {
+    font-weight: bold;
+}
+
+/* =========================
+   SECTIONS
+========================= */
 
 .section {
-    padding: 50px 80px;
+    padding: 60px 80px;
 }
 
 .section-title {
     font-size: 32px;
+
     margin-bottom: 30px;
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 10px;
 }
 
-/* City Grid */
+/* =========================
+   CITY GRID
+========================= */
 
 .city-container {
     display: grid;
@@ -53,116 +114,191 @@
     grid-template-columns:
         repeat(
             auto-fill,
-            minmax(250px, 1fr)
+            minmax(280px, 1fr)
         );
 
     gap: 25px;
 }
 
-/* City Card */
+/* =========================
+   CITY CARD
+========================= */
 
 .city-card {
 
     background: var(--card-color);
 
-    border-radius: 12px;
+    border-radius: 18px;
 
     overflow: hidden;
 
+    cursor: pointer;
+
     transition: 0.3s;
 
-    cursor: pointer;
+    box-shadow:
+        0 10px 25px rgba(0,0,0,0.15);
 }
 
 .city-card:hover {
-    transform: scale(1.03);
+
+    transform:
+        translateY(-8px);
+
+    box-shadow:
+        0 20px 40px rgba(0,0,0,0.25);
 }
 
-.city-card img {
-    width: 100%;
-    height: 180px;
+.weather-icon {
 
-    object-fit: cover;
+    width: 110px;
+
+    height: 110px;
+
+    object-fit: contain;
+
+    display: block;
+
+    margin: 15px auto;
+
 }
 
 .city-card-content {
-    padding: 15px;
+    padding: 18px;
 }
 
 .city-card-content h3 {
-    margin-bottom: 10px;
+    margin-bottom: 12px;
+
+    font-size: 22px;
 }
 
 .city-card-content p {
+    margin-bottom: 8px;
 
     color: var(--text-color);
-
-    margin-bottom: 8px;
 }
 
-/* AQI Badge */
+/* =========================
+   AQI COLORS
+========================= */
 
 .aqi-good {
-    color: #00ff88;
+    color: #00d26a;
 }
 
 .aqi-moderate {
-    color: #ffcc00;
+    color: #ffc107;
 }
 
 .aqi-bad {
-    color: #ff4444;
+    color: #ff4d4f;
 }
 
-/* Remove button */
+/* =========================
+   CARD BUTTONS
+========================= */
 
 .card-actions {
     display: flex;
     gap: 10px;
-    margin-top: 10px;
+    margin-top: 15px;
 }
 
+.favorite-btn,
 .remove-btn {
 
     flex: 1;
 
     border: none;
 
+    border-radius: 10px;
+
     padding: 10px;
 
-    border-radius: 8px;
-
     cursor: pointer;
-
-    background: var(--bg-color);
-
-    color: var(--text-color);
 
     font-weight: bold;
 
     transition: 0.3s;
 }
 
-.remove-btn:hover {
+.favorite-btn {
 
+    background: #00bfff;
+
+    color: white;
+}
+
+.favorite-btn:hover {
+    opacity: 0.85;
+}
+
+.remove-btn {
+
+    background: var(--bg-color);
+
+    color: var(--text-color);
+
+    border: 1px solid #666;
+}
+
+.remove-btn:hover {
     opacity: 0.8;
 }
 
-.favorite-btn {
-    flex: 1;
+/* =========================
+   TRAVEL SECTION
+========================= */
+
+#travel-ranking {
+    margin-top: 20px;
 }
 
-/* Mobile */
+/* =========================
+   FOOTER
+========================= */
+
+footer {
+
+    margin-top: 100px;
+
+    padding: 50px 20px;
+
+    text-align: center;
+
+    border-top:
+        1px solid rgba(255,255,255,0.1);
+}
+
+footer h3 {
+
+    color: #00bfff;
+
+    margin-bottom: 10px;
+}
+
+footer p {
+
+    margin-bottom: 10px;
+
+    color: #999;
+}
+
+/* =========================
+   MOBILE
+========================= */
 
 @media (max-width: 768px) {
 
     .hero-overlay {
-        left: 30px;
-        right: 30px;
+
+        left: 25px;
+        right: 25px;
     }
 
     .hero-overlay h1 {
-        font-size: 48px;
+        font-size: 46px;
     }
 
     .hero-overlay p {
@@ -173,10 +309,13 @@
         padding: 40px 20px;
     }
 
-}
+    .user-panel {
+        padding: 0 20px;
+    }
 
-#travel-ranking {
+    .city-container {
 
-    margin-top: 20px;
-
+        grid-template-columns:
+            1fr;
+    }
 }

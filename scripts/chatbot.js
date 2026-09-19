@@ -1,3 +1,7 @@
+import {
+    GEMINI_API_KEY
+} from "./config.js";
+
 const chatToggle =
     document.getElementById(
         "chat-toggle"
@@ -23,28 +27,25 @@ const chatMessages =
         "chat-messages"
     );
 
+/* =========================
+   Toggle Chat
+========================= */
+
 chatToggle.addEventListener(
     "click",
     () => {
 
-        if (
-            chatBox.style.display
-            === "block"
-        ) {
-
-            chatBox.style.display =
-                "none";
-
-        }
-        else {
-
-            chatBox.style.display =
-                "block";
-
-        }
+        chatBox.style.display =
+            chatBox.style.display === "block"
+                ? "none"
+                : "block";
 
     }
 );
+
+/* =========================
+   Add Message
+========================= */
 
 function addMessage(
     text,
@@ -56,9 +57,8 @@ function addMessage(
             "div"
         );
 
-    div.classList.add(
-        `${type}-message`
-    );
+    div.className =
+        `${type}-message`;
 
     div.textContent =
         text;
@@ -72,83 +72,137 @@ function addMessage(
 
 }
 
-function getAIResponse(
+/* =========================
+   Gemini API
+========================= */
+
+async function getAIResponse(
     message
 ) {
 
-    message =
-        message.toLowerCase();
+    try {
 
-    if (
-        message.includes(
-            "temperature"
-        )
-        ||
-        message.includes(
-            "temp"
-        )
-    ) {
+        const response =
+            await fetch(
+                `https://generativelanguage.googleapis.com/v1beta/models/gemini-3.6-flash:generateContent?key=${GEMINI_API_KEY}`,
+                {
+                    method: "POST",
 
-        return "🌡️ Check current weather section above.";
+                    headers: {
+                        "Content-Type":
+                            "application/json"
+                    },
+
+                    body:
+                        JSON.stringify({
+
+                            contents: [
+                                {
+                                    parts: [
+                                        {
+                                            text: `
+You are WeatherX AI.
+
+You are an AI assistant for a weather website.
+
+Rules:
+- Answer briefly.
+- Be friendly.
+- Focus on weather, climate, travel and air quality.
+- Use emojis when appropriate.
+
+User:
+${message}
+`
+                                        }
+                                    ]
+                                }
+                            ]
+
+                        })
+
+                }
+            );
+
+        const data =
+            await response.json();
+
+        return data
+            ?.candidates?.[0]
+            ?.content?.parts?.[0]
+            ?.text
+            ||
+            "❌ No response";
+
+    }
+    catch (error) {
+
+        console.error(error);
+
+        return "❌ AI Error";
 
     }
 
-    if (
-        message.includes(
-            "umbrella"
-        )
-    ) {
-
-        return "☔ Check rain forecast before going out.";
-
-    }
-
-    if (
-        message.includes(
-            "uv"
-        )
-    ) {
-
-        return "🧴 High UV → use sunscreen.";
-
-    }
-
-    return "🤖 I understand. WeatherX AI is still learning.";
 }
+
+/* =========================
+   Send Message
+========================= */
+
+async function sendMessage() {
+
+    const message =
+        chatInput.value.trim();
+
+    if (!message)
+        return;
+
+    addMessage(
+        message,
+        "user"
+    );
+
+    chatInput.value = "";
+
+    addMessage(
+        "⏳ Thinking...",
+        "bot"
+    );
+
+    const response =
+        await getAIResponse(
+            message
+        );
+
+    chatMessages.lastChild.remove();
+
+    addMessage(
+        response,
+        "bot"
+    );
+
+}
+
+/* =========================
+   Events
+========================= */
 
 sendBtn.addEventListener(
     "click",
-    () => {
+    sendMessage
+);
 
-        const text =
-            chatInput.value.trim();
+chatInput.addEventListener(
+    "keydown",
+    event => {
 
-        if (!text)
-            return;
+        if (
+            event.key === "Enter"
+        ) {
 
-        addMessage(
-            text,
-            "user"
-        );
+            sendMessage();
 
-        const response =
-            getAIResponse(
-                text
-            );
-
-        setTimeout(
-            () => {
-
-                addMessage(
-                    response,
-                    "bot"
-                );
-
-            },
-            500
-        );
-
-        chatInput.value = "";
+        }
 
     }
 );

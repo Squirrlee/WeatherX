@@ -1,147 +1,222 @@
-/* Hero */
+/* =========================
+   Hero
+========================= */
 
 .info-hero {
-    height: 70vh;
+
+    height: 75vh;
+
+    display: flex;
+
+    align-items: center;
 
     background-image:
         linear-gradient(
-            rgba(0, 0, 0, 0.4),
-            rgba(0, 0, 0, 0.9)
+            rgba(0,0,0,0.35),
+            rgba(0,0,0,0.85)
         ),
         url("../assets/default-city.jpg");
 
     background-size: cover;
+
     background-position: center;
 
-    display: flex;
-    align-items: center;
 }
 
 .info-overlay {
+
     margin-left: 80px;
+
+    max-width: 700px;
+
 }
 
 .info-overlay h1 {
+
     font-size: 72px;
-    margin-bottom: 15px;
+
+    margin-bottom: 10px;
+
 }
 
 .info-overlay h2 {
-    font-size: 48px;
-    margin-bottom: 15px;
+
+    font-size: 52px;
+
     color: #00bfff;
+
+    margin-bottom: 15px;
+
 }
 
 .info-overlay p {
+
     font-size: 24px;
+
     color: #ddd;
+
 }
 
-/* Section */
+/* =========================
+   Sections
+========================= */
 
 .section {
+
     padding: 60px 80px;
+
 }
 
 .section-title {
+
     font-size: 32px;
-    margin-bottom: 30px;
+
+    margin-bottom: 25px;
+
 }
 
-/* Stats */
+/* =========================
+   Shared Card Style
+========================= */
+
+.stat-card,
+.sun-card,
+.uv-card,
+.travel-card,
+.chart-section,
+.ai-card {
+
+    background: var(--card-color);
+
+    border-radius: 18px;
+
+    padding: 25px;
+
+    box-shadow:
+        0 8px 25px
+        rgba(0,0,0,0.15);
+
+    transition: 0.3s;
+
+}
+
+.stat-card:hover,
+.sun-card:hover,
+.travel-card:hover,
+.forecast-card:hover {
+
+    transform:
+        translateY(-5px);
+
+}
+
+/* =========================
+   Stats
+========================= */
 
 .stats-section {
+
     margin-top: 60px;
+
 }
 
 .stats-grid {
+
     display: grid;
 
     grid-template-columns:
         repeat(
             auto-fit,
-            minmax(220px, 1fr)
+            minmax(220px,1fr)
         );
 
     gap: 20px;
+
 }
 
 .stat-card {
 
-    background: var(--card-color);
-
-    padding: 20px;
-
-    border-radius: 15px;
-
     text-align: center;
 
-    transition: 0.3s;
-}
-
-.stat-card:hover {
-    transform: translateY(-5px);
 }
 
 .stat-card h3 {
 
     color: #00bfff;
 
-    margin-bottom: 10px;
+    margin-bottom: 12px;
+
 }
 
 .stat-card p {
 
-    font-size: 24px;
+    font-size: 26px;
 
     font-weight: bold;
+
 }
 
-/* Forecast */
+/* =========================
+   Forecast
+========================= */
 
 .forecast-container {
+
     display: grid;
 
     grid-template-columns:
         repeat(
             auto-fill,
-            minmax(180px, 1fr)
+            minmax(180px,1fr)
         );
 
     gap: 20px;
+
 }
 
 .forecast-card {
 
     background: var(--card-color);
 
-    border-radius: 12px;
+    border-radius: 16px;
 
     padding: 20px;
 
     text-align: center;
 
     transition: 0.3s;
-}
 
-.forecast-card:hover {
-    transform: scale(1.03);
+    box-shadow:
+        0 5px 15px
+        rgba(0,0,0,0.12);
+
 }
 
 .forecast-card img {
+
     width: 64px;
+
     margin: 10px auto;
+
 }
 
 .forecast-card h3 {
+
     margin-bottom: 10px;
+
 }
 
 .forecast-card p {
+
     color: var(--text-color);
+
+    opacity: 0.9;
+
 }
 
-/* AQI */
+/* =========================
+   AQI
+========================= */
 
 .aqi-good {
     color: #4caf50;
@@ -149,7 +224,7 @@
 }
 
 .aqi-moderate {
-    color: #ffeb3b;
+    color: #ffc107;
     font-weight: bold;
 }
 
@@ -186,6 +261,7 @@
     overflow: hidden;
 
     margin-top: 12px;
+
 }
 
 .aqi-progress {
@@ -194,30 +270,38 @@
 
     width: 0;
 
+    background: #00bfff;
+
     transition: 0.5s;
 
-    background: #00bfff;
 }
 
-/* Chart */
+/* =========================
+   Chart
+========================= */
 
 .chart-section {
 
-    background: var(--card-color);
+    margin-top: 10px;
 
-    padding: 25px;
-
-    border-radius: 15px;
 }
 
 #weatherChart {
+
     width: 100%;
+
 }
 
-/* Sun */
+/* =========================
+   Sun
+========================= */
 
 .sun-section {
+
     margin-top: 60px;
+
+    padding: 0 80px;
+
 }
 
 .sun-grid {
@@ -227,21 +311,17 @@
     grid-template-columns:
         repeat(
             auto-fit,
-            minmax(250px, 1fr)
+            minmax(250px,1fr)
         );
 
     gap: 20px;
+
 }
 
 .sun-card {
 
-    background: var(--card-color);
-
-    padding: 25px;
-
-    border-radius: 15px;
-
     text-align: center;
+
 }
 
 .sun-card h3 {
@@ -249,35 +329,37 @@
     color: #00bfff;
 
     margin-bottom: 15px;
+
 }
 
 .sun-card p {
 
-    font-size: 28px;
+    font-size: 30px;
 
     font-weight: bold;
+
 }
 
-/* UV */
+/* =========================
+   UV
+========================= */
 
 .uv-section {
+
     margin-top: 60px;
-}
 
-.uv-card {
+    padding: 0 80px;
 
-    background: var(--card-color);
-
-    padding: 25px;
-
-    border-radius: 15px;
 }
 
 #uv-value {
 
-    font-size: 40px;
+    font-size: 48px;
 
     font-weight: bold;
+
+    color: #00bfff;
+
 }
 
 #uv-status {
@@ -287,6 +369,7 @@
     font-size: 20px;
 
     font-weight: bold;
+
 }
 
 .uv-bar {
@@ -300,6 +383,7 @@
     border-radius: 999px;
 
     overflow: hidden;
+
 }
 
 .uv-progress {
@@ -309,30 +393,33 @@
     height: 100%;
 
     transition: 0.5s;
+
 }
 
-/* Travel */
+/* =========================
+   Travel
+========================= */
 
 .travel-section {
+
     margin-top: 60px;
+
+    padding: 0 80px;
+
 }
 
 .travel-card {
 
-    background: var(--card-color);
-
-    padding: 25px;
-
-    border-radius: 15px;
-
     text-align: center;
+
 }
 
 #travel-score {
 
-    font-size: 48px;
+    font-size: 56px;
 
     color: #00bfff;
+
 }
 
 #travel-stars {
@@ -340,6 +427,7 @@
     font-size: 30px;
 
     margin-top: 10px;
+
 }
 
 #travel-status {
@@ -349,9 +437,32 @@
     font-size: 20px;
 
     font-weight: bold;
+
 }
 
-/* Mobile */
+/* =========================
+   AI
+========================= */
+
+.ai-section {
+
+    margin-top: 60px;
+
+}
+
+.ai-item {
+
+    margin-bottom: 15px;
+
+    font-size: 18px;
+
+    line-height: 1.7;
+
+}
+
+/* =========================
+   Mobile
+========================= */
 
 @media (max-width: 768px) {
 
@@ -360,46 +471,39 @@
         margin-left: 25px;
 
         margin-right: 25px;
+
     }
 
     .info-overlay h1 {
+
         font-size: 42px;
+
     }
 
     .info-overlay h2 {
-        font-size: 32px;
+
+        font-size: 34px;
+
     }
 
     .info-overlay p {
+
         font-size: 18px;
+
     }
 
     .section {
+
         padding: 40px 20px;
+
     }
 
-}
+    .sun-section,
+    .uv-section,
+    .travel-section {
 
-.ai-section {
+        padding: 0 20px;
 
-    margin-top: 60px;
-
-}
-
-.ai-card {
-
-    background: var(--card-color);
-
-    border-radius: 15px;
-
-    padding: 25px;
-
-}
-
-.ai-item {
-
-    margin-bottom: 15px;
-
-    font-size: 20px;
+    }
 
 }

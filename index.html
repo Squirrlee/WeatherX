@@ -7,38 +7,35 @@
 
     <title>WeatherX</title>
 
-    <!-- Main CSS -->
     <link rel="stylesheet" href="./styles/main.css" />
 
-    <!-- Home CSS -->
     <link rel="stylesheet" href="./styles/home.css" />
 
-    <!-- Font Awesome -->
     <link
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"
     />
   </head>
-  <script src="./scripts/theme.js"></script>
-  <!-- AI Chat -->
 
-  <div id="chat-toggle">🤖</div>
-
-  <div id="chat-box">
-    <div id="chat-header">Weather Assistant</div>
-
-    <div id="chat-messages">
-      <div class="bot-message">Xin chào 👋</div>
-    </div>
-
-    <div id="chat-input-area">
-      <input type="text" id="chat-input" placeholder="Ask something..." />
-
-      <button id="send-btn">Send</button>
-    </div>
-  </div>
-  <script src="scripts/chatbot.js"></script>
   <body>
+    <!-- AI Chat -->
+
+    <div id="chat-toggle">🤖</div>
+
+    <div id="chat-box">
+      <div id="chat-header">Weather Assistant</div>
+
+      <div id="chat-messages">
+        <div class="bot-message">Xin chào 👋</div>
+      </div>
+
+      <div id="chat-input-area">
+        <input type="text" id="chat-input" placeholder="Ask something..." />
+
+        <button id="send-btn">Send</button>
+      </div>
+    </div>
+
     <!-- Navbar -->
 
     <header>
@@ -55,75 +52,84 @@
           </li>
         </ul>
 
-        <button id="theme-toggle" class="btn btn-secondary">🌙</button>
+        <div class="nav-right">
+          <button id="theme-toggle" class="btn btn-secondary">🌙</button>
 
-        <div class="auth-buttons">
-          <a href="./login.html">
+          <span id="user-name"></span>
+
+          <button id="logout-btn" class="btn btn-secondary">Logout</button>
+
+          <a href="./login.html" id="login-link">
             <button class="btn btn-secondary">Login</button>
           </a>
 
-          <a href="./register.html">
+          <a href="./register.html" id="register-link">
             <button class="btn btn-primary">Register</button>
           </a>
         </div>
       </nav>
     </header>
 
-    <div class="auth-buttons">
-      <span id="user-name"></span>
-
-      <button id="logout-btn" class="btn btn-secondary">Logout</button>
-    </div>
-
-    <!-- Hero Section -->
+    <!-- Hero -->
 
     <section class="hero-section">
-      <img src="./assets/hero.jpg" alt="Hero" class="hero-image" />
+      <img src="./assets/hero.jpg" alt="WeatherX" class="hero-image" />
 
       <div class="hero-overlay">
-        <h1>WeatherX</h1>
+        <h1>Explore Weather Around The World</h1>
 
-        <p>Explore weather around the world</p>
+        <p>
+          Real-time weather, air quality, travel scores and AI-powered insights.
+        </p>
 
-        <a href="./search.html">
-          <button class="btn btn-primary">Search Cities</button>
-        </a>
+        <div class="hero-buttons">
+          <a href="./search.html">
+            <button class="btn btn-primary">
+              <i class="fa-solid fa-magnifying-glass"></i>
+
+              Search Cities
+            </button>
+          </a>
+        </div>
       </div>
     </section>
 
     <!-- Your Location -->
 
     <section class="section">
-      <h2 class="section-title">Your Location</h2>
+      <h2 class="section-title">📍 Your Location</h2>
 
       <div id="my-location" class="city-container"></div>
     </section>
 
-    <!-- Facorite Cities -->
+    <!-- Favorites -->
+
     <section class="section">
-      <h2 class="section-title">Favorite Cities ❤️</h2>
+      <h2 class="section-title">❤️ Favorite Cities</h2>
 
       <div id="favorite-cities" class="city-container"></div>
     </section>
 
+    <!-- Travel Ranking -->
+
     <section class="section">
-      <h2 class="section-title">🏆 Best Cities To Travel Today</h2>
+      <h2 class="section-title">✈️ Best Cities To Travel Today</h2>
 
       <div id="travel-ranking" class="city-container"></div>
     </section>
 
-    <!-- Featured Cities -->
+    <!-- Featured -->
 
     <section class="section">
-      <h2 class="section-title">Featured Cities</h2>
+      <h2 class="section-title">🌎 Featured Cities</h2>
 
       <div id="featured-cities" class="city-container"></div>
     </section>
 
-    <!-- Air Quality Ranking -->
+    <!-- AQI Ranking -->
 
     <section class="section">
-      <h2 class="section-title">Air Quality Ranking</h2>
+      <h2 class="section-title">🌿 Air Quality Ranking</h2>
 
       <div id="aqi-cities" class="city-container"></div>
     </section>
@@ -131,10 +137,18 @@
     <!-- Footer -->
 
     <footer>
+      <h3>WeatherX</h3>
+
+      <p>Explore weather and air quality around the world</p>
+
       <p>© 2026 WeatherX</p>
     </footer>
 
-    <!-- JS -->
+    <!-- Scripts -->
+
+    <script src="./scripts/theme.js"></script>
+
+    <script type="module" src="./scripts/chatbot.js"></script>
 
     <script type="module" src="./scripts/home.js"></script>
   </body>

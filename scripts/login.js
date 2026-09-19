@@ -3,58 +3,67 @@ const loginForm =
         "login-form"
     );
 
-loginForm.addEventListener(
-    "submit",
-    function (event) {
+if (loginForm) {
 
-        event.preventDefault();
+    loginForm.addEventListener(
+        "submit",
+        function (event) {
 
-        const email =
-            document.getElementById(
-                "email"
-            ).value;
+            event.preventDefault();
 
-        const password =
-            document.getElementById(
-                "password"
-            ).value;
+            const email =
+                document
+                    .getElementById(
+                        "email"
+                    )
+                    .value
+                    .trim();
 
-        const users =
-            JSON.parse(
-                localStorage.getItem(
-                    "users"
-                )
-            ) || [];
+            const password =
+                document
+                    .getElementById(
+                        "password"
+                    )
+                    .value;
 
-        const user =
-            users.find(
-                item =>
-                    item.email === email
-                    &&
-                    item.password === password
+            const users =
+                JSON.parse(
+                    localStorage.getItem(
+                        "users"
+                    )
+                ) || [];
+
+            const user =
+                users.find(
+                    item =>
+                        item.email === email
+                        &&
+                        item.password === password
+                );
+
+            if (!user) {
+
+                alert(
+                    "Wrong email or password!"
+                );
+
+                return;
+            }
+
+            localStorage.setItem(
+                "currentUser",
+                JSON.stringify({
+                    username:
+                        user.username,
+                    email:
+                        user.email
+                })
             );
 
-        if (!user) {
-
-            alert(
-                "Wrong email or password!"
-            );
-
-            return;
+            window.location.href =
+                "index.html";
 
         }
+    );
 
-        localStorage.setItem(
-            "currentUser",
-            JSON.stringify(user)
-        );
-
-        alert(
-            "Login successful!"
-        );
-
-        window.location.href =
-            "index.html";
-
-    }
-);
+}

@@ -1,116 +1,221 @@
 <!doctype html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
+<head>
+    <meta charset="UTF-8">
 
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
 
     <title>Search Cities | WeatherX</title>
 
-    <link rel="stylesheet" href="./styles/main.css" />
-
-    <link rel="stylesheet" href="./styles/search.css" />
+    <link
+        rel="stylesheet"
+        href="./styles/main.css"
+    >
 
     <link
-      rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"
-    />
-  </head>
-  <script src="./scripts/theme.js"></script>
-  <!-- AI Chat -->
+        rel="stylesheet"
+        href="./styles/search.css"
+    >
 
-  <div id="chat-toggle">🤖</div>
+    <link
+        rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"
+    >
+</head>
 
-  <div id="chat-box">
-    <div id="chat-header">Weather Assistant</div>
+<body>
 
-    <div id="chat-messages">
-      <div class="bot-message">Xin chào 👋</div>
+    <!-- AI Chat -->
+
+    <div id="chat-toggle">🤖</div>
+
+    <div id="chat-box">
+
+        <div id="chat-header">
+            Weather Assistant
+        </div>
+
+        <div id="chat-messages">
+
+            <div class="bot-message">
+                Xin chào 👋
+            </div>
+
+        </div>
+
+        <div id="chat-input-area">
+
+            <input
+                type="text"
+                id="chat-input"
+                placeholder="Ask something..."
+            >
+
+            <button id="send-btn">
+                Send
+            </button>
+
+        </div>
+
     </div>
 
-    <div id="chat-input-area">
-      <input type="text" id="chat-input" placeholder="Ask something..." />
-
-      <button id="send-btn">Send</button>
-    </div>
-  </div>
-  <script src="scripts/chatbot.js"></script>
-  <body>
     <!-- Navbar -->
 
     <header>
-      <nav>
-        <a href="./index.html" class="logo"> WeatherX </a>
 
-        <ul class="nav-links">
-          <li>
-            <a href="./index.html"> Home </a>
-          </li>
+        <nav>
 
-          <li>
-            <a href="./search.html"> Search </a>
-          </li>
-        </ul>
+            <a
+                href="./index.html"
+                class="logo"
+            >
+                WeatherX
+            </a>
 
-        <button id="theme-toggle" class="btn btn-secondary">🌙</button>
+            <ul class="nav-links">
 
-        <div class="auth-buttons">
-          <a href="./login.html">
-            <button class="btn btn-secondary">Login</button>
-          </a>
+                <li>
+                    <a href="./index.html">
+                        Home
+                    </a>
+                </li>
 
-          <a href="./register.html">
-            <button class="btn btn-primary">Register</button>
-          </a>
-        </div>
-      </nav>
+                <li>
+                    <a href="./search.html">
+                        Search
+                    </a>
+                </li>
+
+            </ul>
+
+            <button
+                id="theme-toggle"
+                class="btn btn-secondary"
+            >
+                🌙
+            </button>
+
+            <div class="auth-buttons">
+
+                <a href="./login.html">
+                    <button class="btn btn-secondary">
+                        Login
+                    </button>
+                </a>
+
+                <a href="./register.html">
+                    <button class="btn btn-primary">
+                        Register
+                    </button>
+                </a>
+
+            </div>
+
+        </nav>
+
     </header>
 
-    <!-- Search Section -->
+    <!-- Search Hero -->
 
     <section class="search-section">
-      <h1>Search Cities</h1>
 
-      <form id="search-form">
-        <div class="search-container">
-          <input
-            id="search-input"
-            type="text"
-            placeholder="Enter city name..."
-            required
-          />
+        <h1>
+            Search Weather
+        </h1>
 
-          <button class="btn btn-primary">
-            <i class="fa-solid fa-magnifying-glass"></i>
+        <p class="search-subtitle">
+            Explore weather and air quality around the world
+        </p>
 
-            Search
-          </button>
-        </div>
-      </form>
+        <form id="search-form">
+
+            <div class="search-container">
+
+                <input
+                    id="search-input"
+                    type="text"
+                    placeholder="Enter city name..."
+                    required
+                >
+
+                <button
+                    class="btn btn-primary"
+                    type="submit"
+                >
+
+                    <i class="fa-solid fa-magnifying-glass"></i>
+
+                    Search
+
+                </button>
+
+            </div>
+
+        </form>
+
     </section>
 
     <!-- Search Results -->
 
     <section class="section">
-      <h2 class="section-title">Results</h2>
 
-      <div id="search-results" class="city-container"></div>
+        <h2 class="section-title">
+            🔍 Search Results
+        </h2>
+
+        <div
+            id="search-results"
+            class="city-container"
+        ></div>
+
     </section>
 
-    <section class="section">
-      <h2 class="section-title">Recent Searches</h2>
+    <!-- Recent Searches -->
 
-      <div id="recent-searches" class="city-container"></div>
+    <section class="section">
+
+        <h2 class="section-title">
+            🕒 Recent Searches
+        </h2>
+
+        <div
+            id="recent-searches"
+            class="city-container"
+        ></div>
+
     </section>
 
     <!-- Footer -->
 
     <footer>
-      <p>© 2026 WeatherX</p>
+
+        <h3>
+            WeatherX
+        </h3>
+
+        <p>
+            Explore weather around the world
+        </p>
+
+        <p>
+            © 2026 WeatherX
+        </p>
+
     </footer>
 
-    <!-- JS -->
+    <!-- Scripts -->
 
-    <script type="module" src="./scripts/search.js"></script>
-  </body>
+    <script src="./scripts/theme.js"></script>
+
+    <script src="./scripts/chatbot.js"></script>
+
+    <script
+        type="module"
+        src="./scripts/search.js"
+    ></script>
+
+</body>
 </html>

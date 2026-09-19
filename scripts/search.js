@@ -23,9 +23,19 @@ const searchResults =
         "search-results"
     );
 
+/* =========================
+   Search Cities
+========================= */
+
 async function searchCities(
     cityName
 ) {
+
+    searchResults.innerHTML = `
+        <div class="empty-state">
+            🔄 Searching...
+        </div>
+    `;
 
     try {
 
@@ -41,52 +51,59 @@ async function searchCities(
 
     } catch (error) {
 
-        console.log(error);
+        console.error(error);
+
+        searchResults.innerHTML = `
+            <div class="empty-state">
+                ❌ Search failed
+            </div>
+        `;
 
     }
 
 }
 
+/* =========================
+   Render Cities
+========================= */
+
 function renderCities(
     cityList
 ) {
 
-    searchResults.innerHTML =
-        "";
+    searchResults.innerHTML = "";
 
     if (
+        !cityList ||
         cityList.length === 0
     ) {
 
-        searchResults.innerHTML =
-            `
-                <p>
-                    No cities found.
-                </p>
-            `;
+        searchResults.innerHTML = `
+            <div class="empty-state">
+                🌍 No cities found
+            </div>
+        `;
 
         return;
+
     }
 
     cityList.forEach(
-        (city) => {
+        city => {
 
-            searchResults.innerHTML +=
-                `
+            searchResults.innerHTML += `
                 <a
-                    href="./info.html?q=${city.name}"
+                    href="./info.html?q=${encodeURIComponent(city.name)}"
                 >
 
-                    <div
-                        class="city-card"
-                    >
+                    <div class="city-card">
 
                         <h3>
-                            ${city.name}
+                            📍 ${city.name}
                         </h3>
 
                         <p>
-                            ${city.region}
+                            ${city.region || "Unknown Region"}
                         </p>
 
                         <p>
@@ -96,11 +113,16 @@ function renderCities(
                     </div>
 
                 </a>
-                `;
+            `;
+
         }
     );
 
 }
+
+/* =========================
+   Save Recent Search
+========================= */
 
 function saveRecentSearch(
     cityName
@@ -116,7 +138,8 @@ function saveRecentSearch(
     recentSearches =
         recentSearches.filter(
             city =>
-                city !== cityName
+                city.toLowerCase() !==
+                cityName.toLowerCase()
         );
 
     recentSearches.unshift(
@@ -138,6 +161,10 @@ function saveRecentSearch(
 
 }
 
+/* =========================
+   Render Recent Searches
+========================= */
+
 function renderRecentSearches() {
 
     const recentSearches =
@@ -150,35 +177,51 @@ function renderRecentSearches() {
     recentSearchesContainer.innerHTML =
         "";
 
+    if (
+        recentSearches.length === 0
+    ) {
+
+        recentSearchesContainer.innerHTML = `
+            <div class="empty-state">
+                No recent searches
+            </div>
+        `;
+
+        return;
+
+    }
+
     recentSearches.forEach(
         city => {
 
-            recentSearchesContainer.innerHTML +=
-                `
+            recentSearchesContainer.innerHTML += `
                 <a
-                    href="./info.html?q=${city}"
+                    href="./info.html?q=${encodeURIComponent(city)}"
                 >
 
-                    <div
-                        class="city-card"
-                    >
+                    <div class="city-card">
 
                         <h3>
-                            ${city}
+                            📍 ${city}
                         </h3>
 
                     </div>
 
                 </a>
-                `;
+            `;
+
         }
     );
 
 }
 
+/* =========================
+   Form Submit
+========================= */
+
 searchForm.addEventListener(
     "submit",
-    (event) => {
+    event => {
 
         event.preventDefault();
 
@@ -204,4 +247,16 @@ searchForm.addEventListener(
     }
 );
 
+/* =========================
+   Init
+========================= */
+
 renderRecentSearches();
+
+searchInput.focus();
+
+/* Default Search */
+
+searchCities(
+    "Hanoi"
+);

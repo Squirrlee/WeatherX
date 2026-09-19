@@ -5,71 +5,101 @@
 
     <meta charset="UTF-8">
 
-    <title>Register - WeatherX</title>
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Register | WeatherX</title>
 
     <link
         rel="stylesheet"
-        href="styles/main.css"
+        href="./styles/main.css"
     >
 
     <link
         rel="stylesheet"
-        href="styles/register.css"
+        href="./styles/register.css"
     >
 
 </head>
 
 <body>
 
-    <div class="auth-container">
+    <div class="auth-page">
 
-        <form id="register-form">
+        <div class="auth-left">
 
-            <h1>Register</h1>
-
-            <input
-                type="text"
-                id="username"
-                placeholder="Username"
-                required
-            >
-
-            <input
-                type="email"
-                id="email"
-                placeholder="Email"
-                required
-            >
-
-            <input
-                type="password"
-                id="password"
-                placeholder="Password"
-                required
-            >
-
-            <button
-                type="submit"
-                class="btn btn-primary"
-            >
-                Register
-            </button>
+            <h1>WeatherX</h1>
 
             <p>
-
-                Already have an account?
-
-                <a href="login.html">
-                    Login
-                </a>
-
+                Create your weather account.
             </p>
 
-        </form>
+        </div>
+
+        <div class="auth-right">
+
+            <form id="register-form">
+
+                <h2>Create Account</h2>
+
+                <p class="subtitle">
+                    Join WeatherX today
+                </p>
+
+                <input
+                    type="text"
+                    id="username"
+                    placeholder="Username"
+                    required
+                >
+
+                <input
+                    type="email"
+                    id="email"
+                    placeholder="Email"
+                    required
+                >
+
+                <input
+                    type="password"
+                    id="password"
+                    placeholder="Password"
+                    required
+                >
+
+                <button
+                    type="submit"
+                    class="btn btn-primary"
+                >
+                    Register
+                </button>
+
+                <p class="switch-page">
+
+                    Already have an account?
+
+                    <a href="login.html">
+                        Login
+                    </a>
+
+                </p>
+
+                <a
+                    href="index.html"
+                    class="back-home"
+                >
+                    ← Back Home
+                </a>
+
+            </form>
+
+        </div>
 
     </div>
 
-    <script src="scripts/register.js"></script>
+    <script src="./scripts/register.js"></script>
 
 </body>
 

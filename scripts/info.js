@@ -3,6 +3,10 @@ import {
     BASE_URL
 } from "./config.js";
 
+/* =========================
+   LOGIN CHECK
+========================= */
+
 const currentUser =
     JSON.parse(
         localStorage.getItem(
@@ -10,12 +14,20 @@ const currentUser =
         )
     );
 
+// Bỏ comment nếu muốn bắt buộc login
+
+/*
 if (!currentUser) {
 
     window.location.href =
         "login.html";
 
 }
+*/
+
+/* =========================
+   GET CITY
+========================= */
 
 const params =
     new URLSearchParams(
@@ -25,7 +37,9 @@ const params =
 const city =
     params.get("q");
 
-/* Hero */
+/* =========================
+   HERO
+========================= */
 
 const cityName =
     document.getElementById(
@@ -47,7 +61,9 @@ const infoHero =
         "info-hero"
     );
 
-/* Weather Info */
+/* =========================
+   WEATHER INFO
+========================= */
 
 const humidity =
     document.getElementById(
@@ -79,7 +95,9 @@ const sunset =
         "sunset"
     );
 
-/* AQI */
+/* =========================
+   AQI
+========================= */
 
 const aqi =
     document.getElementById(
@@ -111,6 +129,10 @@ const co =
         "co"
     );
 
+/* =========================
+   STATISTICS
+========================= */
+
 const highestTemp =
     document.getElementById(
         "highest-temp"
@@ -131,6 +153,10 @@ const maxWind =
         "max-wind"
     );
 
+/* =========================
+   UV
+========================= */
+
 const uvValue =
     document.getElementById(
         "uv-value"
@@ -145,6 +171,10 @@ const uvProgress =
     document.getElementById(
         "uv-progress"
     );
+
+/* =========================
+   TRAVEL
+========================= */
 
 const travelScore =
     document.getElementById(
@@ -161,21 +191,34 @@ const travelStatus =
         "travel-status"
     );
 
+/* =========================
+   AI
+========================= */
+
 const aiAdvice =
     document.getElementById(
         "ai-advice"
     );
 
-/* Forecast */
+/* =========================
+   FORECAST
+========================= */
 
 const forecastContainer =
     document.getElementById(
         "forecast-container"
     );
 
+/* =========================
+   LOAD WEATHER
+========================= */
+
 async function getWeatherData() {
 
     try {
+
+        cityName.textContent =
+            "Loading...";
 
         const response =
             await fetch(
@@ -216,19 +259,33 @@ async function getWeatherData() {
         renderAIAdvice(
             data
         );
-    } catch (error) {
 
-        console.log(error);
+    }
+    catch (error) {
+
+        console.error(
+            error
+        );
+
+        cityName.textContent =
+            "Unable to load weather";
+
+        condition.textContent =
+            "Please try again later";
 
     }
 
 }
 
+/* =========================
+   AI ADVICE
+========================= */
+
 function renderAIAdvice(
     data
 ) {
 
-    let advice = [];
+    const advice = [];
 
     const temp =
         data.current.temp_c;
@@ -248,14 +305,14 @@ function renderAIAdvice(
     if (temp >= 30) {
 
         advice.push(
-            "👕 Nên mặc áo mỏng"
+            "👕 Hot weather, wear light clothes"
         );
 
     }
     else if (temp <= 18) {
 
         advice.push(
-            "🧥 Nên mang áo khoác"
+            "🧥 Bring a jacket"
         );
 
     }
@@ -263,11 +320,11 @@ function renderAIAdvice(
     if (uv >= 7) {
 
         advice.push(
-            "🧴 UV cao, nên dùng kem chống nắng"
+            "🧴 Use sunscreen"
         );
 
         advice.push(
-            "😎 Đeo kính râm khi ra ngoài"
+            "😎 Wear sunglasses"
         );
 
     }
@@ -275,7 +332,7 @@ function renderAIAdvice(
     if (aqi >= 4) {
 
         advice.push(
-            "😷 Chất lượng không khí kém, nên đeo khẩu trang"
+            "😷 Air quality is poor"
         );
 
     }
@@ -287,14 +344,14 @@ function renderAIAdvice(
     ) {
 
         advice.push(
-            "☔ Nên mang theo ô"
+            "☔ Bring an umbrella"
         );
 
     }
     else {
 
         advice.push(
-            "🌤️ Không cần mang ô"
+            "🌤️ No umbrella needed"
         );
 
     }
@@ -308,7 +365,7 @@ function renderAIAdvice(
     ) {
 
         advice.push(
-            "🏃 Thích hợp hoạt động ngoài trời"
+            "🏃 Great for outdoor activities"
         );
 
     }
@@ -322,6 +379,10 @@ function renderAIAdvice(
             .join("");
 
 }
+
+/* =========================
+   TRAVEL SCORE
+========================= */
 
 function renderTravelScore(
     data
@@ -344,53 +405,28 @@ function renderTravelScore(
         data.current.condition.text
             .toLowerCase();
 
-    // Temperature
-
     if (
         temp >= 18
         &&
         temp <= 30
-    ) {
+    ) score += 30;
+
+    if (aqi <= 2)
         score += 30;
-    }
-
-    // AQI
-
-    if (aqi <= 2) {
-
-        score += 30;
-
-    }
-    else if (aqi <= 3) {
-
+    else if (aqi <= 3)
         score += 20;
 
-    }
-
-    // UV
-
-    if (uv <= 5) {
-
+    if (uv <= 5)
         score += 20;
-
-    }
-    else if (uv <= 7) {
-
+    else if (uv <= 7)
         score += 10;
-
-    }
-
-    // Rain
 
     if (
         !condition.includes(
             "rain"
         )
-    ) {
-
+    )
         score += 20;
-
-    }
 
     travelScore.textContent =
         `${score}/100`;
@@ -401,7 +437,7 @@ function renderTravelScore(
             "⭐⭐⭐⭐⭐";
 
         travelStatus.textContent =
-            "Great For Travel";
+            "Excellent";
 
     }
     else if (score >= 60) {
@@ -410,7 +446,7 @@ function renderTravelScore(
             "⭐⭐⭐⭐☆";
 
         travelStatus.textContent =
-            "Good For Travel";
+            "Good";
 
     }
     else if (score >= 40) {
@@ -428,11 +464,14 @@ function renderTravelScore(
             "⭐⭐☆☆☆";
 
         travelStatus.textContent =
-            "Not Recommended";
+            "Poor";
 
     }
 
 }
+/* =========================
+   UV INFO
+========================= */
 
 function getUVInfo(
     uv
@@ -475,26 +514,33 @@ function getUVInfo(
     }
 
     return {
+
         text: "🟣 Extreme",
+
         color: "#9c27b0"
+
     };
 
 }
+
+/* =========================
+   UV CARD
+========================= */
 
 function renderUV(
     data
 ) {
 
-    const uv =
+    const currentUV =
         data.current.uv;
 
     const uvInfo =
         getUVInfo(
-            uv
+            currentUV
         );
 
     uvValue.textContent =
-        uv;
+        currentUV;
 
     uvStatus.textContent =
         uvInfo.text;
@@ -504,7 +550,7 @@ function renderUV(
 
     const percentage =
         Math.min(
-            (uv / 12) * 100,
+            (currentUV / 12) * 100,
             100
         );
 
@@ -516,6 +562,10 @@ function renderUV(
 
 }
 
+/* =========================
+   BACKGROUND
+========================= */
+
 function getWeatherBackground(
     condition
 ) {
@@ -524,65 +574,114 @@ function getWeatherBackground(
         condition.toLowerCase();
 
     if (
-        condition.includes("thunder")
+        condition.includes(
+            "thunder"
+        )
         ||
-        condition.includes("storm")
+        condition.includes(
+            "storm"
+        )
     ) {
+
         return "./assets/thunder.jpg";
+
     }
 
     if (
-        condition.includes("snow")
+        condition.includes(
+            "snow"
+        )
         ||
-        condition.includes("blizzard")
+        condition.includes(
+            "blizzard"
+        )
         ||
-        condition.includes("sleet")
+        condition.includes(
+            "sleet"
+        )
     ) {
+
         return "./assets/snow.jpg";
+
     }
 
     if (
-        condition.includes("rain")
+        condition.includes(
+            "rain"
+        )
         ||
-        condition.includes("drizzle")
+        condition.includes(
+            "drizzle"
+        )
         ||
-        condition.includes("shower")
+        condition.includes(
+            "shower"
+        )
     ) {
+
         return "./assets/rain.jpg";
+
     }
 
     if (
-        condition.includes("fog")
+        condition.includes(
+            "fog"
+        )
         ||
-        condition.includes("mist")
+        condition.includes(
+            "mist"
+        )
         ||
-        condition.includes("haze")
+        condition.includes(
+            "haze"
+        )
     ) {
+
         return "./assets/fog.jpg";
+
     }
 
     if (
-        condition.includes("cloud")
+        condition.includes(
+            "cloud"
+        )
         ||
-        condition.includes("overcast")
+        condition.includes(
+            "overcast"
+        )
     ) {
+
         return "./assets/cloudy.jpg";
+
     }
 
     return "./assets/sunny.jpg";
+
 }
+
+/* =========================
+   SUN INFO
+========================= */
 
 function renderSunInfo(
     forecastDays
 ) {
 
     sunrise.textContent =
-        forecastDays[0].astro.sunrise;
+        forecastDays[0]
+            .astro
+            .sunrise;
 
     sunset.textContent =
-        forecastDays[0].astro.sunset;
+        forecastDays[0]
+            .astro
+            .sunset;
 
 }
+
+/* =========================
+   STATISTICS
+========================= */
 
 function renderStatistics(
     forecastDays
@@ -612,44 +711,40 @@ function renderStatistics(
                 day.day.maxwind_kph
         );
 
-    const highest =
-        Math.max(
+    highestTemp.textContent =
+        `${Math.max(
             ...maxTemps
-        );
+        )}°C`;
 
-    const lowest =
-        Math.min(
+    lowestTemp.textContent =
+        `${Math.min(
             ...minTemps
-        );
+        )}°C`;
 
-    const average =
-        (
+    averageTemp.textContent =
+        `${(
             avgTemps.reduce(
-                (a, b) => a + b,
+                (
+                    a,
+                    b
+                ) =>
+                    a + b,
                 0
             )
             /
             avgTemps.length
-        ).toFixed(1);
-
-    const wind =
-        Math.max(
-            ...winds
-        );
-
-    highestTemp.textContent =
-        `${highest}°C`;
-
-    lowestTemp.textContent =
-        `${lowest}°C`;
-
-    averageTemp.textContent =
-        `${average}°C`;
+        ).toFixed(1)}°C`;
 
     maxWind.textContent =
-        `${wind} km/h`;
+        `${Math.max(
+            ...winds
+        )} km/h`;
 
 }
+
+/* =========================
+   AQI INFO
+========================= */
 
 function getAQIInfo(
     index
@@ -658,44 +753,80 @@ function getAQIInfo(
     switch (index) {
 
         case 1:
+
             return {
+
                 text: "🟢 Good",
-                className: "aqi-good"
+
+                className:
+                    "aqi-good"
+
             };
 
         case 2:
+
             return {
+
                 text: "🟡 Moderate",
-                className: "aqi-moderate"
+
+                className:
+                    "aqi-moderate"
+
             };
 
         case 3:
+
             return {
+
                 text: "🟠 Sensitive",
-                className: "aqi-sensitive"
+
+                className:
+                    "aqi-sensitive"
+
             };
 
         case 4:
+
             return {
+
                 text: "🔴 Unhealthy",
-                className: "aqi-unhealthy"
+
+                className:
+                    "aqi-unhealthy"
+
             };
 
         case 5:
+
             return {
-                text: "🟣 Very Unhealthy",
-                className: "aqi-very-unhealthy"
+
+                text:
+                    "🟣 Very Unhealthy",
+
+                className:
+                    "aqi-very-unhealthy"
+
             };
 
         default:
+
             return {
-                text: "⚫ Hazardous",
-                className: "aqi-hazardous"
+
+                text:
+                    "⚫ Hazardous",
+
+                className:
+                    "aqi-hazardous"
+
             };
 
     }
 
 }
+
+/* =========================
+   AQI %
+========================= */
 
 function getAQIPercentage(
     aqi
@@ -725,6 +856,36 @@ function getAQIPercentage(
 
 }
 
+function getAQIColor(
+    aqi
+) {
+
+    const colors = {
+
+        1: "#4caf50",
+
+        2: "#ffeb3b",
+
+        3: "#ff9800",
+
+        4: "#f44336",
+
+        5: "#9c27b0"
+
+    };
+
+    return (
+        colors[aqi]
+        ||
+        "#7b1fa2"
+    );
+
+}
+
+/* =========================
+   MAIN WEATHER
+========================= */
+
 function renderWeather(
     data
 ) {
@@ -744,13 +905,13 @@ function renderWeather(
         );
 
     infoHero.style.backgroundImage =
-    `
-    linear-gradient(
-    rgba(0,0,0,0.4),
-    rgba(0,0,0,0.9)
-    ),
-    url('${backgroundImage}')
-    `;
+        `
+        linear-gradient(
+            rgba(0,0,0,0.45),
+            rgba(0,0,0,0.9)
+        ),
+        url('${backgroundImage}')
+        `;
 
     humidity.textContent =
         `${data.current.humidity}%`;
@@ -764,16 +925,17 @@ function renderWeather(
     uv.textContent =
         data.current.uv;
 
-    aqi.textContent =
+    const aqiValue =
         data.current.air_quality[
             "us-epa-index"
         ];
-    
+
+    aqi.textContent =
+        aqiValue;
+
     const aqiData =
         getAQIInfo(
-            data.current.air_quality[
-                "us-epa-index"
-            ]
+            aqiValue
         );
 
     aqiStatus.textContent =
@@ -782,18 +944,15 @@ function renderWeather(
     aqiStatus.className =
         aqiData.className;
 
-    const aqiValue =
-        data.current.air_quality[
-            "us-epa-index"
-        ];
+    aqiProgress.style.width =
+        `${getAQIPercentage(
+            aqiValue
+        )}%`;
 
-    const percentage =
-        getAQIPercentage(
+    aqiProgress.style.background =
+        getAQIColor(
             aqiValue
         );
-
-    aqiProgress.style.width =
-        `${percentage}%`;
 
     pm25.textContent =
         data.current.air_quality.pm2_5.toFixed(
@@ -810,48 +969,22 @@ function renderWeather(
             1
         );
 
-    if (aqiValue === 1) {
-
-        aqiProgress.style.background =
-            "#4caf50";
-
-    }
-    else if (aqiValue === 2) {
-
-        aqiProgress.style.background =
-            "#ffeb3b";
-
-    }
-    else if (aqiValue === 3) {
-
-        aqiProgress.style.background =
-            "#ff9800";
-
-    }
-    else if (aqiValue === 4) {
-
-        aqiProgress.style.background =
-            "#f44336";
-
-    }
-    else if (aqiValue === 5) {
-
-        aqiProgress.style.background =
-            "#9c27b0";
-
-    }
-    else {
-
-        aqiProgress.style.background =
-            "#7b1fa2";
-
-    }
-
 }
+/* =========================
+   WEATHER CHART
+========================= */
 
 function renderWeatherChart(
     forecastDays
 ) {
+
+    const chartCanvas =
+        document.getElementById(
+            "weatherChart"
+        );
+
+    if (!chartCanvas)
+        return;
 
     const labels =
         forecastDays.map(
@@ -860,21 +993,25 @@ function renderWeatherChart(
 
     const maxTemps =
         forecastDays.map(
-            day => day.day.maxtemp_c
+            day =>
+                day.day.maxtemp_c
         );
 
     const minTemps =
         forecastDays.map(
-            day => day.day.mintemp_c
+            day =>
+                day.day.mintemp_c
         );
 
-    const ctx =
-        document.getElementById(
-            "weatherChart"
+    const textColor =
+        getComputedStyle(
+            document.body
+        ).getPropertyValue(
+            "--text-color"
         );
 
     new Chart(
-        ctx,
+        chartCanvas,
         {
 
             type: "line",
@@ -897,7 +1034,7 @@ function renderWeatherChart(
                             "#ff4d4d",
 
                         backgroundColor:
-                            "rgba(255,77,77,0.2)",
+                            "rgba(255,77,77,0.15)",
 
                         borderWidth:
                             3,
@@ -919,7 +1056,7 @@ function renderWeatherChart(
                             "#00bfff",
 
                         backgroundColor:
-                            "rgba(0,191,255,0.2)",
+                            "rgba(0,191,255,0.15)",
 
                         borderWidth:
                             3,
@@ -935,8 +1072,10 @@ function renderWeatherChart(
 
             options: {
 
-                responsive:
-                    true,
+                responsive: true,
+
+                maintainAspectRatio:
+                    false,
 
                 plugins: {
 
@@ -945,7 +1084,7 @@ function renderWeatherChart(
                         labels: {
 
                             color:
-                                "white"
+                                textColor
 
                         }
 
@@ -960,7 +1099,7 @@ function renderWeatherChart(
                         ticks: {
 
                             color:
-                                "white"
+                                textColor
 
                         }
 
@@ -971,7 +1110,7 @@ function renderWeatherChart(
                         ticks: {
 
                             color:
-                                "white"
+                                textColor
 
                         }
 
@@ -982,57 +1121,83 @@ function renderWeatherChart(
             }
 
         }
+
     );
 
 }
+
+/* =========================
+   FORECAST
+========================= */
 
 function renderForecast(
     forecastDays
 ) {
 
-    forecastContainer.innerHTML =
-        "";
+    let html = "";
 
     forecastDays.forEach(
-        (day) => {
+        day => {
 
-            forecastContainer.innerHTML +=
-                `
-                <div class="forecast-card">
+            html +=
+            `
+            <div class="forecast-card">
 
-                    <h3>
-                        ${day.date}
-                    </h3>
+                <h3>
+                    ${day.date}
+                </h3>
 
-                    <img
-                        src="https:${day.day.condition.icon}"
-                        alt=""
-                    >
+                <img
+                    src="https:${day.day.condition.icon}"
+                    alt="${day.day.condition.text}"
+                >
 
-                    <p>
-                        ${day.day.avgtemp_c}°C
-                    </p>
+                <p>
+                    🌡️ ${day.day.avgtemp_c}°C
+                </p>
 
-                    <p>
-                        ${day.day.condition.text}
-                    </p>
+                <p>
+                    ${day.day.condition.text}
+                </p>
 
-                </div>
-                `;
+            </div>
+            `;
+
         }
     );
 
-}
-
-if (
-    city
-) {
-
-    getWeatherData();
-
-} else {
-
-    cityName.textContent =
-        "City not found";
+    forecastContainer.innerHTML =
+        html;
 
 }
+
+/* =========================
+   INIT
+========================= */
+
+async function init() {
+
+    if (!city) {
+
+        cityName.textContent =
+            "City not found";
+
+        temperature.textContent =
+            "--";
+
+        condition.textContent =
+            "No city selected";
+
+        return;
+
+    }
+
+    await getWeatherData();
+
+}
+
+/* =========================
+   START
+========================= */
+
+init();

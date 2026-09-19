@@ -3,69 +3,98 @@ const registerForm =
         "register-form"
     );
 
-registerForm.addEventListener(
-    "submit",
-    function (event) {
+if (registerForm) {
 
-        event.preventDefault();
+    registerForm.addEventListener(
+        "submit",
+        function (event) {
 
-        const username =
-            document.getElementById(
-                "username"
-            ).value;
+            event.preventDefault();
 
-        const email =
-            document.getElementById(
-                "email"
-            ).value;
+            const username =
+                document
+                    .getElementById(
+                        "username"
+                    )
+                    .value
+                    .trim();
 
-        const password =
-            document.getElementById(
-                "password"
-            ).value;
+            const email =
+                document
+                    .getElementById(
+                        "email"
+                    )
+                    .value
+                    .trim();
 
-        const users =
-            JSON.parse(
-                localStorage.getItem(
-                    "users"
-                )
-            ) || [];
+            const password =
+                document
+                    .getElementById(
+                        "password"
+                    )
+                    .value;
 
-        const exists =
-            users.find(
-                user =>
-                    user.email === email
+            if (
+                username.length < 3
+            ) {
+
+                alert(
+                    "Username must be at least 3 characters!"
+                );
+
+                return;
+            }
+
+            if (
+                password.length < 6
+            ) {
+
+                alert(
+                    "Password must be at least 6 characters!"
+                );
+
+                return;
+            }
+
+            const users =
+                JSON.parse(
+                    localStorage.getItem(
+                        "users"
+                    )
+                ) || [];
+
+            const exists =
+                users.find(
+                    user =>
+                        user.email === email
+                );
+
+            if (exists) {
+
+                alert(
+                    "Email already exists!"
+                );
+
+                return;
+            }
+
+            users.push({
+
+                username,
+                email,
+                password
+
+            });
+
+            localStorage.setItem(
+                "users",
+                JSON.stringify(users)
             );
 
-        if (exists) {
-
-            alert(
-                "Email already exists!"
-            );
-
-            return;
+            window.location.href =
+                "login.html";
 
         }
+    );
 
-        users.push({
-
-            username,
-            email,
-            password
-
-        });
-
-        localStorage.setItem(
-            "users",
-            JSON.stringify(users)
-        );
-
-        alert(
-            "Register successful!"
-        );
-
-        window.location.href =
-            "login.html";
-
-    }
-);
+}

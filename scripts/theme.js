@@ -7,62 +7,83 @@ document.addEventListener(
                 "theme-toggle"
             );
 
-        if (!themeButton)
+        if (!themeButton) {
             return;
+        }
+
+        /* =========================
+           Apply Theme
+        ========================= */
+
+        function applyTheme(
+            theme
+        ) {
+
+            if (
+                theme === "light"
+            ) {
+
+                document.body.classList.add(
+                    "light-theme"
+                );
+
+                themeButton.textContent =
+                    "☀️";
+
+            } else {
+
+                document.body.classList.remove(
+                    "light-theme"
+                );
+
+                themeButton.textContent =
+                    "🌙";
+
+            }
+
+        }
+
+        /* =========================
+           Load Saved Theme
+        ========================= */
 
         const savedTheme =
             localStorage.getItem(
                 "theme"
-            );
+            ) || "dark";
 
-        if (
-            savedTheme ===
-            "light"
-        ) {
+        applyTheme(
+            savedTheme
+        );
 
-            document.body.classList.add(
-                "light-theme"
-            );
-
-            themeButton.textContent =
-                "☀️";
-
-        }
+        /* =========================
+           Toggle Theme
+        ========================= */
 
         themeButton.addEventListener(
             "click",
             () => {
 
-                document.body.classList.toggle(
-                    "light-theme"
-                );
-
-                if (
+                const currentTheme =
                     document.body.classList.contains(
                         "light-theme"
                     )
-                ) {
+                        ? "light"
+                        : "dark";
 
-                    localStorage.setItem(
-                        "theme",
-                        "light"
-                    );
+                const newTheme =
+                    currentTheme === "light"
+                        ? "dark"
+                        : "light";
 
-                    themeButton.textContent =
-                        "☀️";
+                applyTheme(
+                    newTheme
+                );
 
-                }
-                else {
-
-                    localStorage.setItem(
-                        "theme",
-                        "dark"
-                    );
-
-                    themeButton.textContent =
-                        "🌙";
-
-                }
+                localStorage.setItem(
+                    "theme",
+                    newTheme
+                );
 
             }
         );
