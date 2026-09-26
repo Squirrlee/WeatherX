@@ -313,30 +313,125 @@
    FOOTER
 ========================= */
 
-footer {
+.footer {
 
-    margin-top: 100px;
+    margin-top: 80px;
 
-    padding: 50px 20px;
+    background: #0d1117;
 
-    text-align: center;
+    color: white;
 
-    border-top:
-        1px solid rgba(255,255,255,0.1);
+    border-top: 1px solid rgba(255,255,255,0.08);
+
 }
 
-footer h3 {
+.footer-content {
+
+    max-width: 1400px;
+
+    margin: auto;
+
+    padding: 60px 30px;
+
+    display: grid;
+
+    grid-template-columns:
+        2fr
+        1fr
+        1fr;
+
+    gap: 50px;
+
+}
+
+.footer-brand h3 {
 
     color: #00bfff;
 
-    margin-bottom: 10px;
+    font-size: 28px;
+
+    margin-bottom: 15px;
+
 }
 
-footer p {
+.footer-brand p {
+
+    color: #b0b0b0;
+
+    line-height: 1.8;
+
+}
+
+.footer-links h4,
+.footer-contact h4 {
+
+    margin-bottom: 15px;
+
+}
+
+.footer-links {
+
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 10px;
+
+}
+
+.footer-links a {
+
+    color: #b0b0b0;
+
+    text-decoration: none;
+
+    transition: 0.3s;
+
+}
+
+.footer-links a:hover {
+
+    color: #00bfff;
+
+}
+
+.footer-contact p {
+
+    color: #b0b0b0;
 
     margin-bottom: 10px;
 
-    color: #999;
+}
+
+.footer-bottom {
+
+    border-top: 1px solid rgba(255,255,255,0.08);
+
+    text-align: center;
+
+    padding: 20px;
+
+    color: #888;
+
+}
+
+body.light-mode .footer {
+
+    background: white;
+
+    color: #222;
+
+    border-top: 1px solid #ddd;
+
+}
+
+body.light-mode .footer-brand p,
+body.light-mode .footer-contact p,
+body.light-mode .footer-bottom,
+body.light-mode .footer-links a {
+
+    color: #666;
+
 }
 
 /* =========================
