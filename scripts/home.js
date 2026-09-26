@@ -1,6 +1,7 @@
 import {
     API_KEY,
-    BASE_URL
+    BASE_URL,
+    UNSPLASH_ACCESS_KEY
 } from "./config.js";
 
 const favoriteCitiesContainer =
@@ -234,55 +235,6 @@ function getAQIStatus(
 
 }
 
-function getWeatherImage(
-    condition
-) {
-
-    condition =
-        condition.toLowerCase();
-
-    if (
-        condition.includes("thunder")
-        ||
-        condition.includes("storm")
-    ) {
-        return "./assets/weather-icons/storm.png";
-    }
-
-    if (
-        condition.includes("snow")
-    ) {
-        return "./assets/weather-icons/snow.png";
-    }
-
-    if (
-        condition.includes("rain")
-        ||
-        condition.includes("drizzle")
-    ) {
-        return "./assets/weather-icons/rain.png";
-    }
-
-    if (
-        condition.includes("fog")
-        ||
-        condition.includes("mist")
-    ) {
-        return "./assets/weather-icons/fog.png";
-    }
-
-    if (
-        condition.includes("cloud")
-        ||
-        condition.includes("overcast")
-    ) {
-        return "./assets/weather-icons/cloudy.png";
-    }
-
-    return "./assets/weather-icons/sunny.png";
-
-}
-
 function calculateTravelScore(
     data
 ) {
@@ -356,7 +308,104 @@ function calculateTravelScore(
     return score;
 
 }
-function createCityCard(
+
+function getWeatherIcon(
+    condition
+) {
+
+    condition =
+        condition.toLowerCase();
+
+    if (
+        condition.includes("thunder")
+        ||
+        condition.includes("storm")
+    ) {
+        return "wi-thunderstorm";
+    }
+
+    if (
+        condition.includes("snow")
+    ) {
+        return "wi-snow";
+    }
+
+    if (
+        condition.includes("rain")
+        ||
+        condition.includes("drizzle")
+        ||
+        condition.includes("shower")
+    ) {
+        return "wi-rain";
+    }
+
+    if (
+        condition.includes("fog")
+        ||
+        condition.includes("mist")
+        ||
+        condition.includes("haze")
+    ) {
+        return "wi-fog";
+    }
+
+    if (
+        condition.includes("cloud")
+        ||
+        condition.includes("overcast")
+    ) {
+        return "wi-cloudy";
+    }
+
+    return "wi-day-sunny";
+
+}
+
+async function getCityImage(
+    city
+) {
+
+    try {
+
+        const response =
+            await fetch(
+                `https://api.unsplash.com/search/photos?query=${encodeURIComponent(city)} city&per_page=1&orientation=landscape`,
+                {
+                    headers: {
+                        Authorization:
+                            `Client-ID ${UNSPLASH_ACCESS_KEY}`
+                    }
+                }
+            );
+
+        const data =
+            await response.json();
+
+        if (
+            data.results &&
+            data.results.length > 0
+        ) {
+
+            return data
+                .results[0]
+                .urls
+                .regular;
+
+        }
+
+    }
+    catch (error) {
+
+        console.log(error);
+
+    }
+
+    return "./assets/city-default.jpg";
+
+}
+
+async function createCityCard(
     data
 ) {
 
@@ -372,9 +421,9 @@ function createCityCard(
     const condition =
         data.current.condition.text;
 
-    const icon =
-        getWeatherImage(
-            data.current.condition.text
+    const cityImage =
+        await getCityImage(
+            city
         );
 
     return `
@@ -382,27 +431,31 @@ function createCityCard(
 
 <div class="city-card">
 
+<div class="city-image">
+
 <img
-    src="${icon}"
+    src="${cityImage}"
     alt="${city}"
-    class="weather-icon"
+    loading="lazy"
 >
+
+</div>
 
 <div class="city-card-content">
 
 <h3>${city}</h3>
 
-<p>
-📍 ${country}
-</p>
+<div class="city-temp">
+    ${temp}°C
+</div>
 
-<p>
-🌡️ ${temp}°C
-</p>
+<div class="city-condition">
+    ${condition}
+</div>
 
-<p>
-${condition}
-</p>
+<div class="city-country">
+    📍 ${country}
+</div>
 
 <div class="card-actions">
 
@@ -471,6 +524,7 @@ ${getAQIStatus(aqi)}
 </a>
 `;
 }
+
 async function renderFeaturedCities() {
 
     featuredCitiesContainer.innerHTML =
@@ -478,7 +532,7 @@ async function renderFeaturedCities() {
 
     try {
 
-        const results =
+        const weatherResults =
             await Promise.all(
 
                 cityList.map(
@@ -490,12 +544,20 @@ async function renderFeaturedCities() {
 
             );
 
-        featuredCitiesContainer.innerHTML =
-            results
-                .map(
-                    createCityCard
+        const cards =
+            await Promise.all(
+
+                weatherResults.map(
+                    data =>
+                        createCityCard(
+                            data
+                        )
                 )
-                .join("");
+
+            );
+
+        featuredCitiesContainer.innerHTML =
+            cards.join("");
 
     }
     catch {
@@ -625,12 +687,20 @@ async function renderFavorites() {
 
             );
 
-        favoriteCitiesContainer.innerHTML =
-            results
-                .map(
-                    createCityCard
+        const cards =
+            await Promise.all(
+
+                results.map(
+                    data =>
+                        createCityCard(
+                            data
+                        )
                 )
-                .join("");
+
+            );
+
+        favoriteCitiesContainer.innerHTML =
+            cards.join("");
 
     }
     catch {
@@ -657,6 +727,7 @@ async function renderFavorites() {
     }
 
 }
+
 async function renderMyLocation() {
 
     try {
@@ -681,7 +752,7 @@ async function renderMyLocation() {
             await response.json();
 
         myLocationContainer.innerHTML =
-            createCityCard(
+            await createCityCard(
                 data
             );
 
@@ -710,6 +781,7 @@ async function renderMyLocation() {
     }
 
 }
+
 function renderTravelRanking(
     cities
 ) {

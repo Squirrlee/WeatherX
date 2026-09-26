@@ -149,17 +149,61 @@
         0 20px 40px rgba(0,0,0,0.25);
 }
 
-.weather-icon {
+.city-image {
 
-    width: 110px;
+    width: 100%;
 
-    height: 110px;
+    height: 180px;
 
-    object-fit: contain;
+    overflow: hidden;
 
-    display: block;
+    border-radius: 18px 18px 0 0;
 
-    margin: 15px auto;
+}
+
+.city-image img {
+
+    width: 100%;
+
+    height: 100%;
+
+    object-fit: cover;
+
+    transition: 0.4s;
+
+}
+
+.city-card:hover .city-image img {
+
+    transform: scale(1.08);
+
+}
+
+.city-temp {
+
+    font-size: 40px;
+
+    font-weight: 700;
+
+    color: var(--accent-color);
+
+    margin: 10px 0;
+
+}
+
+.city-condition {
+
+    opacity: 0.8;
+
+    margin-bottom: 10px;
+
+}
+
+.city-country {
+
+    opacity: 0.7;
+
+    font-size: 14px;
 
 }
 
@@ -200,9 +244,19 @@
 ========================= */
 
 .card-actions {
-    display: flex;
-    gap: 10px;
+
     margin-top: 15px;
+
+    display: flex;
+
+    justify-content: space-between;
+
+}
+
+.card-actions button {
+
+    padding: 8px 12px;
+
 }
 
 .favorite-btn,
