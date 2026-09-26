@@ -1,415 +1,260 @@
 <!doctype html>
 <html lang="en">
+  <head>
+    <meta charset="UTF-8" />
 
-<head>
-
-    <meta charset="UTF-8">
-
-    <meta
-        name="viewport"
-        content="width=device-width, initial-scale=1.0"
-    >
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
     <title>Weather Details | WeatherX</title>
 
-    <link
-        rel="stylesheet"
-        href="./styles/main.css"
-    >
+    <link rel="stylesheet" href="./styles/main.css" />
+
+    <link rel="stylesheet" href="./styles/info.css" />
 
     <link
-        rel="stylesheet"
-        href="./styles/info.css"
-    >
-
-    <link
-        rel="stylesheet"
-        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"
-    >
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"
+    />
 
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  </head>
 
-</head>
-
-<body>
-
+  <body>
     <!-- AI Chat -->
 
     <div id="chat-toggle">🤖</div>
 
     <div id="chat-box">
+      <div id="chat-header">Weather Assistant</div>
 
-        <div id="chat-header">
-            Weather Assistant
-        </div>
+      <div id="chat-messages">
+        <div class="bot-message">Xin chào 👋</div>
+      </div>
 
-        <div id="chat-messages">
+      <div id="chat-input-area">
+        <input type="text" id="chat-input" placeholder="Ask something..." />
 
-            <div class="bot-message">
-                Xin chào 👋
-            </div>
-
-        </div>
-
-        <div id="chat-input-area">
-
-            <input
-                type="text"
-                id="chat-input"
-                placeholder="Ask something..."
-            >
-
-            <button id="send-btn">
-                Send
-            </button>
-
-        </div>
-
+        <button id="send-btn">Send</button>
+      </div>
     </div>
 
     <!-- Navbar -->
 
     <header>
+      <nav>
+        <a href="./index.html" class="logo"> WeatherX </a>
 
-        <nav>
+        <ul class="nav-links">
+          <li>
+            <a href="./index.html"> Home </a>
+          </li>
 
-            <a
-                href="./index.html"
-                class="logo"
-            >
-                WeatherX
-            </a>
+          <li>
+            <a href="./search.html"> Search </a>
+          </li>
+        </ul>
 
-            <ul class="nav-links">
+        <button id="theme-toggle" class="btn btn-secondary">🌙</button>
 
-                <li>
-                    <a href="./index.html">
-                        Home
-                    </a>
-                </li>
+        <div class="auth-buttons">
+          <a href="./login.html">
+            <button class="btn btn-secondary">Login</button>
+          </a>
 
-                <li>
-                    <a href="./search.html">
-                        Search
-                    </a>
-                </li>
-
-            </ul>
-
-            <button
-                id="theme-toggle"
-                class="btn btn-secondary"
-            >
-                🌙
-            </button>
-
-            <div class="auth-buttons">
-
-                <a href="./login.html">
-                    <button class="btn btn-secondary">
-                        Login
-                    </button>
-                </a>
-
-                <a href="./register.html">
-                    <button class="btn btn-primary">
-                        Register
-                    </button>
-                </a>
-
-            </div>
-
-        </nav>
-
+          <a href="./register.html">
+            <button class="btn btn-primary">Register</button>
+          </a>
+        </div>
+      </nav>
     </header>
 
     <!-- Hero -->
 
-    <section
-        class="info-hero"
-        id="info-hero"
-    >
+    <section class="info-hero" id="info-hero">
+      <div class="info-overlay">
+        <h1 id="city-name">Loading...</h1>
 
-        <div class="info-overlay">
+        <h2 id="temperature">--</h2>
 
-            <h1 id="city-name">
-                Loading...
-            </h1>
-
-            <h2 id="temperature">
-                --
-            </h2>
-
-            <p id="condition">
-                Loading...
-            </p>
-
-        </div>
-
+        <p id="condition">Loading...</p>
+      </div>
     </section>
 
     <!-- Weather Information -->
 
     <section class="section">
+      <h2 class="section-title">🌤 Weather Information</h2>
 
-        <h2 class="section-title">
-            🌤 Weather Information
-        </h2>
-
-        <div class="stats-grid">
-
-            <div class="stat-card">
-                <h3>Humidity</h3>
-                <p id="humidity">--</p>
-            </div>
-
-            <div class="stat-card">
-                <h3>Wind</h3>
-                <p id="wind">--</p>
-            </div>
-
-            <div class="stat-card">
-                <h3>Pressure</h3>
-                <p id="pressure">--</p>
-            </div>
-
-            <div class="stat-card">
-                <h3>UV Index</h3>
-                <p id="uv">--</p>
-            </div>
-
+      <div class="stats-grid">
+        <div class="stat-card">
+          <h3>Humidity</h3>
+          <p id="humidity">--</p>
         </div>
 
+        <div class="stat-card">
+          <h3>Wind</h3>
+          <p id="wind">--</p>
+        </div>
+
+        <div class="stat-card">
+          <h3>Pressure</h3>
+          <p id="pressure">--</p>
+        </div>
+
+        <div class="stat-card">
+          <h3>UV Index</h3>
+          <p id="uv">--</p>
+        </div>
+      </div>
     </section>
 
     <!-- Air Quality -->
 
     <section class="section">
+      <h2 class="section-title">🌿 Air Quality</h2>
 
-        <h2 class="section-title">
-            🌿 Air Quality
-        </h2>
+      <div class="stats-grid">
+        <div class="stat-card">
+          <h3>AQI</h3>
 
-        <div class="stats-grid">
+          <p id="aqi">--</p>
 
-            <div class="stat-card">
+          <small id="aqi-status"> Loading... </small>
 
-                <h3>AQI</h3>
-
-                <p id="aqi">--</p>
-
-                <small id="aqi-status">
-                    Loading...
-                </small>
-
-                <div class="aqi-bar">
-
-                    <div
-                        id="aqi-progress"
-                        class="aqi-progress"
-                    ></div>
-
-                </div>
-
-            </div>
-
-            <div class="stat-card">
-                <h3>PM2.5</h3>
-                <p id="pm25">--</p>
-            </div>
-
-            <div class="stat-card">
-                <h3>PM10</h3>
-                <p id="pm10">--</p>
-            </div>
-
-            <div class="stat-card">
-                <h3>CO</h3>
-                <p id="co">--</p>
-            </div>
-
+          <div class="aqi-bar">
+            <div id="aqi-progress" class="aqi-progress"></div>
+          </div>
         </div>
 
+        <div class="stat-card">
+          <h3>PM2.5</h3>
+          <p id="pm25">--</p>
+        </div>
+
+        <div class="stat-card">
+          <h3>PM10</h3>
+          <p id="pm10">--</p>
+        </div>
+
+        <div class="stat-card">
+          <h3>CO</h3>
+          <p id="co">--</p>
+        </div>
+      </div>
     </section>
 
     <!-- Sun Information -->
 
     <section class="sun-section">
+      <h2 class="section-title">🌅 Sun Information</h2>
 
-        <h2 class="section-title">
-            🌅 Sun Information
-        </h2>
-
-        <div class="sun-grid">
-
-            <div class="sun-card">
-                <h3>Sunrise</h3>
-                <p id="sunrise">--</p>
-            </div>
-
-            <div class="sun-card">
-                <h3>Sunset</h3>
-                <p id="sunset">--</p>
-            </div>
-
+      <div class="sun-grid">
+        <div class="sun-card">
+          <h3>Sunrise</h3>
+          <p id="sunrise">--</p>
         </div>
 
+        <div class="sun-card">
+          <h3>Sunset</h3>
+          <p id="sunset">--</p>
+        </div>
+      </div>
     </section>
 
     <!-- UV -->
 
     <section class="uv-section">
+      <h2 class="section-title">☀️ UV Index</h2>
 
-        <h2 class="section-title">
-            ☀️ UV Index
-        </h2>
+      <div class="uv-card">
+        <p id="uv-value">--</p>
 
-        <div class="uv-card">
+        <p id="uv-status">Loading...</p>
 
-            <p id="uv-value">--</p>
-
-            <p id="uv-status">
-                Loading...
-            </p>
-
-            <div class="uv-bar">
-
-                <div
-                    id="uv-progress"
-                    class="uv-progress"
-                ></div>
-
-            </div>
-
+        <div class="uv-bar">
+          <div id="uv-progress" class="uv-progress"></div>
         </div>
-
+      </div>
     </section>
 
     <!-- Temperature Trend -->
 
     <section class="section">
+      <h2 class="section-title">📈 Temperature Trend</h2>
 
-        <h2 class="section-title">
-            📈 Temperature Trend
-        </h2>
-
-        <div class="chart-section">
-
-            <canvas id="weatherChart"></canvas>
-
-        </div>
-
+      <div class="chart-section">
+        <canvas id="weatherChart"></canvas>
+      </div>
     </section>
 
     <!-- Forecast -->
 
     <section class="section">
+      <h2 class="section-title">📅 7 Day Forecast</h2>
 
-        <h2 class="section-title">
-            📅 7 Day Forecast
-        </h2>
-
-        <div
-            id="forecast-container"
-            class="forecast-container"
-        ></div>
-
+      <div id="forecast-container" class="forecast-container"></div>
     </section>
 
     <!-- Statistics -->
 
     <section class="stats-section">
+      <h2 class="section-title">📊 Weather Statistics</h2>
 
-        <h2 class="section-title">
-            📊 Weather Statistics
-        </h2>
-
-        <div class="stats-grid">
-
-            <div class="stat-card">
-                <h3>Highest Temp</h3>
-                <p id="highest-temp">--</p>
-            </div>
-
-            <div class="stat-card">
-                <h3>Lowest Temp</h3>
-                <p id="lowest-temp">--</p>
-            </div>
-
-            <div class="stat-card">
-                <h3>Average Temp</h3>
-                <p id="average-temp">--</p>
-            </div>
-
-            <div class="stat-card">
-                <h3>Max Wind</h3>
-                <p id="max-wind">--</p>
-            </div>
-
+      <div class="stats-grid">
+        <div class="stat-card">
+          <h3>Highest Temp</h3>
+          <p id="highest-temp">--</p>
         </div>
 
+        <div class="stat-card">
+          <h3>Lowest Temp</h3>
+          <p id="lowest-temp">--</p>
+        </div>
+
+        <div class="stat-card">
+          <h3>Average Temp</h3>
+          <p id="average-temp">--</p>
+        </div>
+
+        <div class="stat-card">
+          <h3>Max Wind</h3>
+          <p id="max-wind">--</p>
+        </div>
+      </div>
     </section>
 
     <!-- Travel Score -->
 
     <section class="travel-section">
+      <h2 class="section-title">✈️ Travel Score</h2>
 
-        <h2 class="section-title">
-            ✈️ Travel Score
-        </h2>
+      <div class="travel-card">
+        <h3 id="travel-score">--</h3>
 
-        <div class="travel-card">
+        <p id="travel-stars">--</p>
 
-            <h3 id="travel-score">
-                --
-            </h3>
-
-            <p id="travel-stars">
-                --
-            </p>
-
-            <p id="travel-status">
-                --
-            </p>
-
-        </div>
-
+        <p id="travel-status">--</p>
+      </div>
     </section>
 
     <!-- AI Assistant -->
 
     <section class="section ai-section">
+      <h2 class="section-title">🤖 AI Weather Assistant</h2>
 
-        <h2 class="section-title">
-            🤖 AI Weather Assistant
-        </h2>
-
-        <div class="ai-card">
-
-            <div id="ai-advice">
-                Loading...
-            </div>
-
-        </div>
-
+      <div class="ai-card">
+        <div id="ai-advice">Loading...</div>
+      </div>
     </section>
 
     <!-- Footer -->
 
     <footer>
+      <h3>WeatherX</h3>
 
-        <h3>
-            WeatherX
-        </h3>
+      <p>Explore weather and air quality around the world</p>
 
-        <p>
-            Explore weather and air quality around the world
-        </p>
-
-        <p>
-            © 2026 WeatherX
-        </p>
-
+      <p>© 2026 WeatherX</p>
     </footer>
 
     <!-- Scripts -->
@@ -418,11 +263,6 @@
 
     <script src="./scripts/chatbot.js"></script>
 
-    <script
-        type="module"
-        src="./scripts/info.js"
-    ></script>
-
-</body>
-
+    <script type="module" src="./scripts/info.js"></script>
+  </body>
 </html>

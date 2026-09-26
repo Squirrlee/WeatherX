@@ -363,14 +363,17 @@ function getWeatherIcon(
 }
 
 async function getCityImage(
-    city
+    city,
+    country
 ) {
 
     try {
 
-        const response =
+        let response =
             await fetch(
-                `https://api.unsplash.com/search/photos?query=${encodeURIComponent(city)} city&per_page=1&orientation=landscape`,
+                `https://api.unsplash.com/search/photos?query=${encodeURIComponent(
+                    city + " " + country
+                )}&per_page=1&orientation=landscape`,
                 {
                     headers: {
                         Authorization:
@@ -379,7 +382,35 @@ async function getCityImage(
                 }
             );
 
-        const data =
+        let data =
+            await response.json();
+
+        if (
+            data.results &&
+            data.results.length > 0
+        ) {
+
+            return data
+                .results[0]
+                .urls
+                .regular;
+
+        }
+
+        response =
+            await fetch(
+                `https://api.unsplash.com/search/photos?query=${encodeURIComponent(
+                    country
+                )}&per_page=1&orientation=landscape`,
+                {
+                    headers: {
+                        Authorization:
+                            `Client-ID ${UNSPLASH_ACCESS_KEY}`
+                    }
+                }
+            );
+
+        data =
             await response.json();
 
         if (
@@ -401,8 +432,7 @@ async function getCityImage(
 
     }
 
-    return "./assets/city-default.jpg";
-
+    return "https://images.unsplash.com/photo-1506744038136-46273834b3fb";
 }
 
 async function createCityCard(
@@ -423,7 +453,8 @@ async function createCityCard(
 
     const cityImage =
         await getCityImage(
-            city
+            city,
+            country
         );
 
     return `

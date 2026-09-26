@@ -1,6 +1,7 @@
 import {
     API_KEY,
-    BASE_URL
+    BASE_URL,
+    UNSPLASH_ACCESS_KEY
 } from "./config.js";
 
 const recentSearchesContainer =
@@ -67,7 +68,7 @@ async function searchCities(
    Render Cities
 ========================= */
 
-function renderCities(
+async function renderCities(
     cityList
 ) {
 
@@ -88,15 +89,32 @@ function renderCities(
 
     }
 
-    cityList.forEach(
-        city => {
+    for (const city of cityList) {
 
-            searchResults.innerHTML += `
-                <a
-                    href="./info.html?q=${encodeURIComponent(city.name)}"
-                >
+        const image =
+            await getCityImage(
+                city.name,
+                city.country
+            );
 
-                    <div class="city-card">
+        searchResults.innerHTML += `
+
+            <a
+                href="./info.html?q=${encodeURIComponent(city.name)}"
+            >
+
+                <div class="city-card">
+
+                    <div class="city-image">
+
+                        <img
+                            src="${image}"
+                            alt="${city.name}"
+                        >
+
+                    </div>
+
+                    <div class="city-card-content">
 
                         <h3>
                             📍 ${city.name}
@@ -112,12 +130,56 @@ function renderCities(
 
                     </div>
 
-                </a>
-            `;
+                </div>
+
+            </a>
+
+        `;
+
+    }
+
+}
+
+async function getCityImage(
+    city,
+    country
+) {
+
+    try {
+
+        const response =
+            await fetch(
+                `https://api.unsplash.com/search/photos?query=${encodeURIComponent(
+                    city + " " + country
+                )}&per_page=1&orientation=landscape`,
+                {
+                    headers: {
+                        Authorization:
+                            `Client-ID ${UNSPLASH_ACCESS_KEY}`
+                    }
+                }
+            );
+
+        const data =
+            await response.json();
+
+        if (
+            data.results &&
+            data.results.length > 0
+        ) {
+
+            return data.results[0].urls.regular;
 
         }
-    );
 
+    }
+    catch (error) {
+
+        console.log(error);
+
+    }
+
+    return "https://images.unsplash.com/photo-1506744038136-46273834b3fb";
 }
 
 /* =========================
