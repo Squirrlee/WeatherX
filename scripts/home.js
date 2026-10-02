@@ -29,6 +29,16 @@ const rankingContainer =
         "travel-ranking"
     );
 
+const heroSection =
+    document.querySelector(
+        ".hero-section"
+    );
+
+const heroImage =
+    document.querySelector(
+        ".hero-image"
+    );
+
 const travelCities = [
 
     "Tokyo",
@@ -359,6 +369,83 @@ function getWeatherIcon(
     }
 
     return "wi-day-sunny";
+
+}
+
+function getWeatherTheme(
+    condition
+) {
+
+    condition =
+        condition.toLowerCase();
+
+    if (
+        condition.includes("thunder")
+        ||
+        condition.includes("storm")
+    ) {
+        return "thunder";
+    }
+
+    if (
+        condition.includes("snow")
+    ) {
+        return "snow";
+    }
+
+    if (
+        condition.includes("rain")
+        ||
+        condition.includes("drizzle")
+        ||
+        condition.includes("shower")
+    ) {
+        return "rain";
+    }
+
+    if (
+        condition.includes("fog")
+        ||
+        condition.includes("mist")
+        ||
+        condition.includes("haze")
+    ) {
+        return "fog";
+    }
+
+    if (
+        condition.includes("cloud")
+        ||
+        condition.includes("overcast")
+    ) {
+        return "cloudy";
+    }
+
+    return "sunny";
+
+}
+
+function updateHeroTheme(
+    condition
+) {
+
+    const theme =
+        getWeatherTheme(
+            condition
+        );
+
+    heroSection.classList.remove(
+        "sunny",
+        "cloudy",
+        "rain",
+        "thunder",
+        "fog",
+        "snow"
+    );
+
+    heroSection.classList.add(
+        theme
+    );
 
 }
 
@@ -781,6 +868,10 @@ async function renderMyLocation() {
 
         const data =
             await response.json();
+
+        updateHeroTheme(
+            data.current.condition.text
+        );
 
         myLocationContainer.innerHTML =
             await createCityCard(

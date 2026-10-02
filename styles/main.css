@@ -1,22 +1,25 @@
 :root {
 
-    --bg-color: #141414;
+    --bg-color: #0b1020;
     --text-color: #ffffff;
-    --card-color: #1f1f1f;
 
-    --header-color: rgba(0, 0, 0, 0.8);
+    --card-color: #18213a;
 
-    --button-secondary: #2d2d2d;
-    --button-secondary-hover: #444;
+    --header-color: rgba(11,16,32,0.8);
 
-    --footer-border: #333;
-    --footer-text: #999;
+    --button-secondary: #24304f;
+    --button-secondary-hover: #314063;
 
-    --accent-color: #00bfff;
+    --footer-border: #26324f;
+    --footer-text: #94a3b8;
+
+    --accent-color: #38bdf8;
+
+    --secondary-color: #8b5cf6;
+    --pink-color: #ec4899;
 
     --shadow:
-        0 10px 25px rgba(0,0,0,0.25);
-
+        0 15px 35px rgba(0,0,0,0.3);
 }
 
 .light-theme {
@@ -103,11 +106,14 @@ header {
 
     height: 70px;
 
-    background: var(--header-color);
+    background:
+        rgba(11,16,32,0.75);
 
-    backdrop-filter: blur(12px);
+    backdrop-filter:
+        blur(16px);
 
-    border-bottom: 1px solid rgba(255,255,255,0.05);
+    border-bottom:
+        1px solid rgba(255,255,255,0.08);
 
     z-index: 1000;
 
@@ -129,14 +135,22 @@ nav {
 
 }
 
-.logo {
+.logo{
+    font-size:32px;
+    font-weight:bold;
 
-    font-size: 32px;
+    background: linear-gradient(
+        90deg,
+        #38bdf8,
+        #8b5cf6,
+        #ec4899
+    );
 
-    font-weight: bold;
+    background-clip: text;
+    -webkit-background-clip: text;
 
-    color: var(--accent-color);
-
+    color: transparent;
+    -webkit-text-fill-color: transparent;
 }
 
 .nav-links {
@@ -201,19 +215,19 @@ nav {
 
 }
 
-.btn-primary {
-
+.btn-primary{
     background:
-        var(--accent-color);
+        linear-gradient(
+            135deg,
+            #38bdf8,
+            #8b5cf6
+        );
 
-    color: white;
-
+    color:white;
 }
 
-.btn-primary:hover {
-
-    opacity: 0.85;
-
+.btn-primary:hover{
+    transform: translateY(-2px);
 }
 
 .btn-secondary {
@@ -237,16 +251,18 @@ nav {
    COMMON CARD
 ======================= */
 
-.card {
+.card{
+    background: var(--card-color);
 
-    background:
-        var(--card-color);
+    border:
+        1px solid rgba(255,255,255,0.06);
 
-    border-radius: 15px;
+    transition: 0.3s;
+}
 
-    box-shadow:
-        var(--shadow);
-
+.card:hover{
+    transform:
+        translateY(-5px);
 }
 
 /* =======================
@@ -295,7 +311,11 @@ footer p {
     border-radius: 50%;
 
     background:
-        var(--accent-color);
+        linear-gradient(
+            135deg,
+            #38bdf8,
+            #8b5cf6
+        );
 
     display: flex;
 
@@ -347,7 +367,11 @@ footer p {
     padding: 15px;
 
     background:
-        var(--accent-color);
+        linear-gradient(
+            135deg,
+            #38bdf8,
+            #8b5cf6
+        );
 
     color: white;
 
@@ -406,7 +430,11 @@ footer p {
     cursor: pointer;
 
     background:
-        var(--accent-color);
+        linear-gradient(
+            135deg,
+            #38bdf8,
+            #8b5cf6
+        );
 
     color: white;
 
