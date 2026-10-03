@@ -11,6 +11,7 @@
 
     <link rel="stylesheet" href="./styles/home.css" />
 
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   </head>
 
   <body>
@@ -110,8 +111,23 @@
 
     <section class="section">
       <h2 class="section-title">✈️ Best Cities To Travel Today</h2>
-
-      <div id="travel-ranking" class="city-container"></div>
+      <div class="table-wrapper">
+        <table class="ranking-table">
+          <thead>
+            <tr>
+              <th width="80">Rank</th>
+              <th width="300">City</th>
+              <th width="200">Travel Score</th>
+              <th width="150">Weather</th>
+              <th width="150">AQI</th>
+              <th width="120">Action</th>
+            </tr>
+          </thead>
+          <tbody id="travel-ranking-body">
+            <!-- JS sẽ render vào đây -->
+          </tbody>
+        </table>
+      </div>
     </section>
 
     <!-- Featured -->
@@ -128,6 +144,14 @@
       <h2 class="section-title">🌿 Air Quality Ranking</h2>
 
       <div id="aqi-cities" class="city-container"></div>
+    </section>
+
+    <!-- Thêm section biểu đồ -->
+    <section class="section">
+      <h2 class="section-title">📊 Air Quality Comparison</h2>
+      <div class="chart-card">
+        <canvas id="aqiChart" style="height: 300px"></canvas>
+      </div>
     </section>
 
     <!-- Footer -->

@@ -381,6 +381,306 @@ GLASSMORPHISM EFFECT
 }
 
 /* =========================
+RANKING TABLE
+========================= */
+.ranking-table {
+    width: 100%;
+    border-collapse: collapse;
+    background: var(--card-color);
+    border-radius: 18px;
+    overflow: hidden;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+}
+
+.ranking-table thead {
+    background: linear-gradient(135deg, var(--accent-color), #0099cc);
+    color: white;
+}
+
+.ranking-table th {
+    padding: 16px 20px;
+    text-align: left;
+    font-weight: 600;
+    font-size: 14px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.ranking-table td {
+    padding: 16px 20px;
+    border-top: 1px solid rgba(255,255,255,0.05);
+}
+
+.light-theme .ranking-table td {
+    border-top: 1px solid rgba(0,0,0,0.05);
+}
+
+.ranking-table tr:hover {
+    background: rgba(0,191,255,0.05);
+}
+
+/* Rank Badge */
+.rank-badge {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    font-weight: bold;
+    font-size: 14px;
+}
+
+.rank-1 { background: linear-gradient(135deg, #FFD700, #FFA500); color: #000; }
+.rank-2 { background: linear-gradient(135deg, #C0C0C0, #999); color: #000; }
+.rank-3 { background: linear-gradient(135deg, #CD7F32, #B87333); color: #fff; }
+.rank-other { background: var(--bg-color); color: var(--text-color); }
+
+/* Travel Score Bar */
+.score-bar {
+    width: 100%;
+    height: 8px;
+    background: rgba(255,255,255,0.1);
+    border-radius: 4px;
+    overflow: hidden;
+    margin-top: 6px;
+}
+
+.score-fill {
+    height: 100%;
+    background: linear-gradient(90deg, #00bfff, #00ff88);
+    border-radius: 4px;
+    transition: width 0.8s ease;
+}
+
+/* City Info in Table */
+.table-city {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.table-city img {
+    width: 48px;
+    height: 48px;
+    border-radius: 10px;
+    object-fit: cover;
+}
+
+.table-city-name {
+    font-weight: 600;
+    font-size: 15px;
+}
+
+.table-city-country {
+    font-size: 13px;
+    opacity: 0.7;
+}
+
+/* Weather Mini */
+.weather-mini {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 15px;
+}
+
+.weather-mini-icon {
+    font-size: 20px;
+}
+
+/* =========================
+AQI LIST VIEW
+========================= */
+.aqi-list {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.aqi-list-item {
+    background: var(--card-color);
+    border-radius: 14px;
+    padding: 18px 24px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    transition: 0.3s;
+    border: 1px solid rgba(255,255,255,0.05);
+}
+
+.light-theme .aqi-list-item {
+    border: 1px solid rgba(0,0,0,0.05);
+}
+
+.aqi-list-item:hover {
+    transform: translateX(5px);
+    box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+}
+
+.aqi-list-info {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    flex: 1;
+}
+
+.aqi-list-rank {
+    font-size: 24px;
+    font-weight: bold;
+    color: var(--accent-color);
+    width: 40px;
+}
+
+.aqi-list-city {
+    flex: 1;
+}
+
+.aqi-list-city h3 {
+    font-size: 18px;
+    margin-bottom: 4px;
+}
+
+.aqi-list-city p {
+    font-size: 13px;
+    opacity: 0.7;
+}
+
+.aqi-list-bar {
+    flex: 1;
+    max-width: 300px;
+    margin: 0 20px;
+}
+
+.aqi-bar-bg {
+    height: 10px;
+    background: rgba(255,255,255,0.1);
+    border-radius: 5px;
+    overflow: hidden;
+}
+
+.light-theme .aqi-bar-bg {
+    background: rgba(0,0,0,0.1);
+}
+
+.aqi-bar-fill {
+    height: 100%;
+    border-radius: 5px;
+    transition: width 1s ease;
+}
+
+.aqi-list-value {
+    text-align: right;
+    min-width: 100px;
+}
+
+.aqi-list-value .aqi-number {
+    font-size: 28px;
+    font-weight: bold;
+    display: block;
+}
+
+.aqi-list-value .aqi-label {
+    font-size: 13px;
+    opacity: 0.8;
+}
+
+/* =========================
+FEATURED CARD ENHANCED
+========================= */
+.featured-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 25px;
+}
+
+.featured-card {
+    position: relative;
+    border-radius: 20px;
+    overflow: hidden;
+    height: 380px;
+    cursor: pointer;
+    transition: 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+}
+
+.featured-card:hover {
+    transform: translateY(-10px) scale(1.02);
+    box-shadow: 0 25px 50px rgba(0,0,0,0.3);
+}
+
+.featured-card-image {
+    position: absolute;
+    inset: 0;
+    background-size: cover;
+    background-position: center;
+    transition: 0.6s;
+}
+
+.featured-card:hover .featured-card-image {
+    transform: scale(1.1);
+}
+
+.featured-card-overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+        to top,
+        rgba(0,0,0,0.95) 0%,
+        rgba(0,0,0,0.4) 50%,
+        transparent 100%
+    );
+}
+
+.featured-card-content {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    padding: 24px;
+    color: white;
+    z-index: 2;
+}
+
+.featured-card-city {
+    font-size: 26px;
+    font-weight: bold;
+    margin-bottom: 8px;
+}
+
+.featured-card-temp {
+    font-size: 42px;
+    font-weight: bold;
+    color: var(--accent-color);
+    margin-bottom: 8px;
+}
+
+.featured-card-condition {
+    font-size: 16px;
+    opacity: 0.9;
+    margin-bottom: 12px;
+}
+
+.featured-card-stats {
+    display: flex;
+    gap: 16px;
+    font-size: 13px;
+    opacity: 0.85;
+}
+
+.featured-card-badge {
+    position: absolute;
+    top: 16px;
+    right: 16px;
+    background: var(--accent-color);
+    color: white;
+    padding: 6px 12px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: bold;
+    z-index: 3;
+}
+
+/* =========================
    MOBILE
 ========================= */
 

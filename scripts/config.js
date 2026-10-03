@@ -5,7 +5,7 @@ export const BASE_URL =
     "https://api.weatherapi.com/v1";
 
 export const GEMINI_API_KEY =
-    "AQ.Ab8RN6JHGs1Ixi5_osYRhxTjbD1-DhllBLmGhFuecQ2m4wxTAg";
+    "AQ.Ab8RN6KJw3b6BBvCxzaez-ou9Omc25DU5GX0n2A30rjnZzkv1Q";
 
 export const UNSPLASH_ACCESS_KEY =
     "mPnYqjlZIVKw-sxBy95No3AaM-2mRc3M3Dbxp1r5jUI";

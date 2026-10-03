@@ -56,78 +56,49 @@ const cityList = [
 
 ];
 
-const userName =
-    document.getElementById(
-        "user-name"
-    );
+/* =========================
+AUTHENTICATION
+========================= */
+const userName = document.getElementById("user-name");
+const logoutBtn = document.getElementById("logout-btn");
+const loginLink = document.getElementById("login-link");
+const registerLink = document.getElementById("register-link");
 
-const logoutBtn =
-    document.getElementById(
-        "logout-btn"
-    );
-
-const loginLink =
-    document.getElementById(
-        "login-link"
-    );
-
-const registerLink =
-    document.getElementById(
-        "register-link"
-    );
-
-const currentUser =
-    JSON.parse(
-        localStorage.getItem(
-            "currentUser"
-        )
-    );
-if (currentUser) {
-
-    userName.textContent =
-        `👤 ${currentUser.username}`;
-
-    userName.style.display =
-        "inline";
-
-    logoutBtn.style.display =
-        "inline-block";
-
-    loginLink.style.display =
-        "none";
-
-    registerLink.style.display =
-        "none";
-
-}
-else {
-
-    userName.style.display =
-        "none";
-
-    logoutBtn.style.display =
-        "none";
-
-    loginLink.style.display =
-        "inline-block";
-
-    registerLink.style.display =
-        "inline-block";
-
-}
-
-logoutBtn?.addEventListener(
-    "click",
-    () => {
-
-        localStorage.removeItem(
-            "currentUser"
-        );
-
-        window.location.reload();
-
+function updateAuthUI() {
+    try {
+        const currentUser = JSON.parse(localStorage.getItem("currentUser"));
+        
+        if (currentUser && currentUser.username) {
+            userName.textContent = `👤 ${currentUser.username}`;
+            userName.style.display = "inline-block";
+            logoutBtn.style.display = "inline-block";
+            loginLink.style.display = "none";
+            registerLink.style.display = "none";
+        } else {
+            userName.style.display = "none";
+            logoutBtn.style.display = "none";
+            loginLink.style.display = "inline-block";
+            registerLink.style.display = "inline-block";
+        }
+    } catch (error) {
+        console.error("Auth error:", error);
+        // Fallback
+        userName.style.display = "none";
+        logoutBtn.style.display = "none";
+        loginLink.style.display = "inline-block";
+        registerLink.style.display = "inline-block";
     }
-);
+}
+
+// Call on load
+updateAuthUI();
+
+// Logout handler
+logoutBtn?.addEventListener("click", () => {
+    localStorage.removeItem("currentUser");
+    updateAuthUI(); // Update ngay không cần reload
+    window.location.href = "./index.html";
+});
 
 function showSkeleton(container, count = 4) {
     container.innerHTML = Array(count)
@@ -593,73 +564,52 @@ ${getAQIStatus(aqi)}
 `;
 }
 
-async function renderFeaturedCities() {
-
-    featuredCitiesContainer.innerHTML =
-        "<p>Loading cities...</p>";
-
-    try {
-
-        const weatherResults =
-            await Promise.all(
-
-                cityList.map(
-                    city =>
-                        getCityWeather(
-                            city
-                        )
-                )
-
-            );
-
-        const cards =
-            await Promise.all(
-
-                weatherResults.map(
-                    data =>
-                        createCityCard(
-                            data
-                        )
-                )
-
-            );
-
-        featuredCitiesContainer.innerHTML =
-            cards.join("");
-
-    }
-    catch {
-
-        featuredCitiesContainer.innerHTML =
-            `
-            <div class="city-card">
-
-                <div class="city-card-content">
-
-                    <h3>
-                        Failed
-                    </h3>
-
-                    <p>
-                        Cannot load cities
-                    </p>
-
-                </div>
-
-            </div>
-            `;
-
-    }
-
-}
-
 async function renderAQICities() {
     showSkeleton(aqiCitiesContainer, 6);
     try {
         const results = await Promise.all(
             cityList.map(city => getCityWeather(city))
         );
-        aqiCitiesContainer.innerHTML = results.map(createAQICard).join("");
+        
+        // 1. Render List View (Danh sách dọc)
+        aqiCitiesContainer.innerHTML = results.map((item, index) => {
+            const aqiIndex = item.current.air_quality["us-epa-index"]; // 1 đến 5
+            const aqiPercentage = (aqiIndex / 5) * 100;
+            const aqiColor = aqiIndex <= 2 ? '#4caf50' : 
+                             aqiIndex <= 3 ? '#ffeb3b' : 
+                             aqiIndex <= 4 ? '#ff9800' : '#f44336';
+            
+            // Chuyển index 1-5 thành text mô tả
+            const aqiText = aqiIndex === 1 ? "Good" : 
+                            aqiIndex === 2 ? "Moderate" : 
+                            aqiIndex === 3 ? "Sensitive" : 
+                            aqiIndex === 4 ? "Unhealthy" : "Very Unhealthy";
+
+            return `
+                <div class="aqi-list-item">
+                    <div class="aqi-list-info">
+                        <div class="aqi-list-rank">#${index + 1}</div>
+                        <div class="aqi-list-city">
+                            <h3>${item.location.name}</h3>
+                            <p>${item.location.country}</p>
+                        </div>
+                    </div>
+                    <div class="aqi-list-bar">
+                        <div class="aqi-bar-bg">
+                            <div class="aqi-bar-fill" style="width: ${aqiPercentage}%; background: ${aqiColor}"></div>
+                        </div>
+                    </div>
+                    <div class="aqi-list-value">
+                        <span class="aqi-number" style="color: ${aqiColor}">${aqiIndex}</span>
+                        <span class="aqi-label">${aqiText}</span>
+                    </div>
+                </div>
+            `;
+        }).join('');
+
+        // 2. ✅ GỌI HÀM RENDER BIỂU ĐỒ NGAY SAU KHI CÓ DỮ LIỆU
+        renderAQIChart(results);
+
     } catch {
         showError(
             aqiCitiesContainer,
@@ -668,6 +618,71 @@ async function renderAQICities() {
             "renderAQICities()"
         );
     }
+}
+
+// ✅ HÀM RENDER BIỂU ĐỒ (Đã sửa lỗi CSS variable và thêm destroy chart cũ)
+function renderAQIChart(citiesData) {
+    const chartCanvas = document.getElementById('aqiChart');
+    if (!chartCanvas) return;
+
+    // Lấy màu text đúng cách từ CSS variable
+    const textColor = getComputedStyle(document.body).getPropertyValue('--text-color').trim();
+
+    // Hủy biểu đồ cũ nếu có (tránh lỗi "Canvas is already in use" khi reload)
+    if (window.aqiChartInstance) {
+        window.aqiChartInstance.destroy();
+    }
+
+    const ctx = chartCanvas.getContext('2d');
+    window.aqiChartInstance = new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: citiesData.map(c => c.location.name),
+            datasets: [{
+                label: 'AQI Index (1-5)',
+                data: citiesData.map(c => c.current.air_quality["us-epa-index"]),
+                backgroundColor: citiesData.map(c => {
+                    const aqi = c.current.air_quality["us-epa-index"];
+                    return aqi <= 2 ? '#4caf50' : 
+                           aqi <= 3 ? '#ffeb3b' : 
+                           aqi <= 4 ? '#ff9800' : '#f44336';
+                }),
+                borderRadius: 8,
+                borderWidth: 0
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: { display: false },
+                tooltip: {
+                    callbacks: {
+                        label: function(context) {
+                            const aqi = context.raw;
+                            const labels = ["", "Good", "Moderate", "Sensitive", "Unhealthy", "Very Unhealthy"];
+                            return `AQI: ${aqi} (${labels[aqi] || "Hazardous"})`;
+                        }
+                    }
+                }
+            },
+            scales: {
+                y: {
+                    beginAtZero: true,
+                    max: 5,
+                    ticks: { 
+                        color: textColor,
+                        stepSize: 1 // Hiển thị từng số nguyên 1, 2, 3, 4, 5
+                    },
+                    grid: { color: 'rgba(128, 128, 128, 0.1)' }
+                },
+                x: {
+                    ticks: { color: textColor },
+                    grid: { display: false }
+                }
+            }
+        }
+    });
 }
 
 async function renderFavorites() {
@@ -756,115 +771,86 @@ async function renderMyLocation() {
 
 }
 
-function renderTravelRanking(
-    cities
-) {
-
-    rankingContainer.innerHTML =
-        "";
-
-    cities.forEach(
-        (
-            city,
-            index
-        ) => {
-
-            rankingContainer.innerHTML +=
-                `
-                <div class="city-card">
-
-                    <div class="city-card-content">
-
-                        <h3>
-                            🏆 #${index + 1}
-                        </h3>
-
-                        <p>
-                            ${city.city}
-                        </p>
-
-                        <p>
-                            Travel Score:
-                            ${city.score}/100
-                        </p>
-
-                        <p>
-                            🌡️ ${city.temp}°C
-                        </p>
-
+function renderTravelRanking(cities) {
+    const tbody = document.getElementById("travel-ranking-body");
+    
+    tbody.innerHTML = cities.map((city, index) => {
+        const rank = index + 1;
+        const rankClass = rank <= 3 ? `rank-${rank}` : "rank-other";
+        const rankIcon = rank === 1 ? "" : rank === 2 ? "🥈" : rank === 3 ? "🥉" : `#${rank}`;
+        
+        return `
+            <tr>
+                <td>
+                    <div class="rank-badge ${rankClass}">
+                        ${rankIcon}
                     </div>
-
-                </div>
-                `;
-
-        }
-    );
-
+                </td>
+                <td>
+                    <div class="table-city">
+                        <img src="${city.image || './assets/default-city.jpg'}" alt="${city.city}">
+                        <div>
+                            <div class="table-city-name">${city.city}</div>
+                            <div class="table-city-country">${city.country}</div>
+                        </div>
+                    </div>
+                </td>
+                <td>
+                    <div>
+                        <strong>${city.score}/100</strong>
+                        <div class="score-bar">
+                            <div class="score-fill" style="width: ${city.score}%"></div>
+                        </div>
+                    </div>
+                </td>
+                <td>
+                    <div class="weather-mini">
+                        <span class="weather-mini-icon">${city.weatherIcon}</span>
+                        <span>${city.temp}°C</span>
+                    </div>
+                </td>
+                <td>
+                    <span class="aqi-badge aqi-${city.aqi <= 2 ? 'good' : city.aqi <= 3 ? 'moderate' : 'bad'}">
+                        ${city.aqi} - ${getAQIStatus(city.aqi)}
+                    </span>
+                </td>
+                <td>
+                    <a href="./info.html?q=${encodeURIComponent(city.city)}" class="btn btn-primary">
+                        View Details
+                    </a>
+                </td>
+            </tr>
+        `;
+    }).join("");
 }
 
+// Cập nhật hàm loadTravelRanking
 async function loadTravelRanking() {
-
     try {
-
-        const results =
-            await Promise.all(
-
-                travelCities.map(
-                    async city => {
-
-                        const response =
-                            await fetch(
-
-`${BASE_URL}/current.json?key=${API_KEY}&q=${city}&aqi=yes`
-
-                            );
-
-                        const data =
-                            await response.json();
-
-                        return {
-
-                            city,
-
-                            score:
-                                calculateTravelScore(
-                                    data
-                                ),
-
-                            temp:
-                                data.current.temp_c
-
-                        };
-
-                    }
-                )
-
-            );
-
-        results.sort(
-            (
-                a,
-                b
-            ) =>
-                b.score - a.score
+        const results = await Promise.all(
+            travelCities.map(async city => {
+                const response = await fetch(
+                    `${BASE_URL}/current.json?key=${API_KEY}&q=${city}&aqi=yes`
+                );
+                const data = await response.json();
+                return {
+                    city,
+                    country: data.location.country,
+                    score: calculateTravelScore(data),
+                    temp: data.current.temp_c,
+                    aqi: data.current.air_quality["us-epa-index"],
+                    weatherIcon: getWeatherIcon(data.current.condition.text),
+                    image: await getCityImage(city, data.location.country)
+                };
+            })
         );
-
-        renderTravelRanking(
-            results
-        );
-
+        results.sort((a, b) => b.score - a.score);
+        renderTravelRanking(results);
+    } catch (error) {
+        console.error("Error loading travel ranking:", error);
     }
-    catch (
-        error
-    ) {
-
-        console.log(
-            error
-        );
-
-    }
-
 }
+
 document.addEventListener(
     "click",
     event => {
