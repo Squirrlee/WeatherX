@@ -16,13 +16,15 @@
 
 .hero-section::before {
     content: "";
+
     position: absolute;
+
     inset: 0;
 
     background:
         linear-gradient(
-            rgba(11,16,32,0.25),
-            rgba(11,16,32,0.65)
+            rgba(0,0,0,0.35),
+            rgba(0,0,0,0.75)
         );
 }
 
@@ -126,9 +128,7 @@
 
     background: var(--card-color);
 
-    border: 1px solid rgba(255,255,255,0.06);
-
-    backdrop-filter: blur(10px);
+    border-radius: 18px;
 
     overflow: hidden;
 
@@ -179,47 +179,13 @@
 
 }
 
-.city-card.sunny {
-    border-top: 4px solid #FFD43B;
-}
-
-.city-card.cloudy {
-    border-top: 4px solid #94A3B8;
-}
-
-.city-card.rain {
-    border-top: 4px solid #38BDF8;
-}
-
-.city-card.thunder {
-    border-top: 4px solid #8B5CF6;
-}
-
-.city-card.fog {
-    border-top: 4px solid #CBD5E1;
-}
-
-.city-card.snow {
-    border-top: 4px solid #7DD3FC;
-}
-
 .city-temp {
 
-    font-size: 42px;
-    font-weight: 800;
+    font-size: 40px;
 
-    background:
-        linear-gradient(
-            90deg,
-            #38BDF8,
-            #8B5CF6
-        );
+    font-weight: 700;
 
-    -webkit-background-clip: text;
-    background-clip: text;
-
-    color: transparent;
-    -webkit-text-fill-color: transparent;
+    color: var(--accent-color);
 
     margin: 10px 0;
 
@@ -347,200 +313,71 @@
    FOOTER
 ========================= */
 
-.footer {
+footer {
 
-    margin-top: 80px;
+    margin-top: 100px;
 
-    background: var(--card-color);
-
-    color: white;
-
-    border-top: 1px solid rgba(255,255,255,0.08);
-
-}
-
-.footer-content {
-
-    max-width: 1400px;
-
-    margin: auto;
-
-    padding: 60px 30px;
-
-    display: grid;
-
-    grid-template-columns:
-        2fr
-        1fr
-        1fr;
-
-    gap: 50px;
-
-}
-
-.footer-brand h3 {
-
-    background:
-        linear-gradient(
-            90deg,
-            #38BDF8,
-            #8B5CF6,
-            #EC4899
-        );
-
-    -webkit-background-clip:text;
-    background-clip:text;
-
-    color:transparent;
-
-    font-size: 28px;
-
-    margin-bottom: 15px;
-
-}
-
-.footer-brand p {
-
-    color: #b0b0b0;
-
-    line-height: 1.8;
-
-}
-
-.footer-links h4,
-.footer-contact h4 {
-
-    margin-bottom: 15px;
-
-}
-
-.footer-links {
-
-    display: flex;
-
-    flex-direction: column;
-
-    gap: 10px;
-
-}
-
-.footer-links a {
-
-    color: #b0b0b0;
-
-    text-decoration: none;
-
-    transition: 0.3s;
-
-}
-
-.footer-links a:hover {
-
-    color: #00bfff;
-
-}
-
-.footer-contact p {
-
-    color: #b0b0b0;
-
-    margin-bottom: 10px;
-
-}
-
-.footer-bottom {
-
-    border-top: 1px solid rgba(255,255,255,0.08);
+    padding: 50px 20px;
 
     text-align: center;
 
-    padding: 20px;
-
-    color: #888;
-
+    border-top:
+        1px solid rgba(255,255,255,0.1);
 }
 
-body.light-mode .footer {
+footer h3 {
 
-    background: white;
+    color: #00bfff;
 
-    color: #222;
-
-    border-top: 1px solid #ddd;
-
+    margin-bottom: 10px;
 }
 
-body.light-mode .footer-brand p,
-body.light-mode .footer-contact p,
-body.light-mode .footer-bottom,
-body.light-mode .footer-links a {
+footer p {
 
-    color: #666;
+    margin-bottom: 10px;
 
+    color: #999;
 }
 
 /* =========================
-   DYNAMIC WEATHER HERO
+GLASSMORPHISM EFFECT
 ========================= */
-
-.hero-section.sunny {
-    background:
-        linear-gradient(
-            135deg,
-            #FFD43B,
-            #FF922B,
-            #FF6B6B
-        );
+.city-card {
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
 }
 
-.hero-section.cloudy {
-    background:
-        linear-gradient(
-            135deg,
-            #94A3B8,
-            #64748B,
-            #334155
-        );
+.light-theme .city-card {
+    border: 1px solid rgba(0, 0, 0, 0.06);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.06);
 }
 
-.hero-section.rain {
-    background:
-        linear-gradient(
-            135deg,
-            #38BDF8,
-            #2563EB,
-            #312E81
-        );
+.city-card:hover {
+    border-color: rgba(0, 191, 255, 0.3);
+    box-shadow: 0 20px 40px rgba(0, 191, 255, 0.15);
 }
 
-.hero-section.thunder {
-    background:
-        linear-gradient(
-            135deg,
-            #4F46E5,
-            #8B5CF6,
-            #EC4899
-        );
+/* Hiệu ứng fade-in khi card xuất hiện */
+.city-card {
+    animation: fadeInUp 0.5s ease backwards;
 }
 
-.hero-section.fog {
-    background:
-        linear-gradient(
-            135deg,
-            #CBD5E1,
-            #94A3B8,
-            #64748B
-        );
-}
+.city-card:nth-child(1) { animation-delay: 0.05s; }
+.city-card:nth-child(2) { animation-delay: 0.1s; }
+.city-card:nth-child(3) { animation-delay: 0.15s; }
+.city-card:nth-child(4) { animation-delay: 0.2s; }
+.city-card:nth-child(5) { animation-delay: 0.25s; }
+.city-card:nth-child(6) { animation-delay: 0.3s; }
 
-.hero-section.snow {
-    background:
-        linear-gradient(
-            135deg,
-            #E0F2FE,
-            #7DD3FC,
-            #3B82F6
-        );
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }
 
 /* =========================

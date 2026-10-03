@@ -215,68 +215,41 @@
         ========================= */
 
         async function getWeatherData() {
-
-            try {
-
-                cityName.textContent =
-                    "Loading...";
-
-                const response =
-                    await fetch(
-                        `${BASE_URL}/forecast.json?key=${API_KEY}&q=${city}&days=7&aqi=yes`
-                    );
-
-                const data =
-                    await response.json();
-
-                await renderWeather(
-                    data
-                );
-
-                renderForecast(
-                    data.forecast.forecastday
-                );
-
-                renderWeatherChart(
-                    data.forecast.forecastday
-                );
-
-                renderStatistics(
-                    data.forecast.forecastday
-                );
-
-                renderSunInfo(
-                    data.forecast.forecastday
-                );
-
-                renderUV(
-                    data
-                );
-
-                renderTravelScore(
-                    data
-                );
-
-                renderAIAdvice(
-                    data
-                );
-
-            }
-            catch (error) {
-
-                console.error(
-                    error
-                );
-
-                cityName.textContent =
-                    "Unable to load weather";
-
-                condition.textContent =
-                    "Please try again later";
-
-            }
-
-        }
+    try {
+        cityName.textContent = "Đang tải...";
+        
+        // Hiển thị skeleton cho forecast
+        forecastContainer.innerHTML = Array(7)
+            .fill('<div class="skeleton" style="height: 200px;"></div>')
+            .join('');
+        
+        const response = await fetch(
+            `${BASE_URL}/forecast.json?key=${API_KEY}&q=${city}&days=7&aqi=yes`
+        );
+        const data = await response.json();
+        
+        await renderWeather(data);
+        renderForecast(data.forecast.forecastday);
+        renderWeatherChart(data.forecast.forecastday);
+        renderStatistics(data.forecast.forecastday);
+        renderSunInfo(data.forecast.forecastday);
+        renderUV(data);
+        renderTravelScore(data);
+        renderAIAdvice(data);
+    } catch (error) {
+        console.error(error);
+        cityName.textContent = "Không thể tải";
+        condition.textContent = "Vui lòng thử lại sau";
+        forecastContainer.innerHTML = `
+            <div class="error-state">
+                <div class="error-icon">⚠️</div>
+                <h3>Không thể tải dữ liệu</h3>
+                <p>Vui lòng kiểm tra tên thành phố hoặc thử lại</p>
+                <button onclick="getWeatherData()">🔄 Thử lại</button>
+            </div>
+        `;
+    }
+}
 
         /* =========================
         AI ADVICE

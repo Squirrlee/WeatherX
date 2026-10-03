@@ -1,25 +1,22 @@
 :root {
 
-    --bg-color: #0b1020;
+    --bg-color: #141414;
     --text-color: #ffffff;
+    --card-color: #1f1f1f;
 
-    --card-color: #18213a;
+    --header-color: rgba(0, 0, 0, 0.8);
 
-    --header-color: rgba(11,16,32,0.8);
+    --button-secondary: #2d2d2d;
+    --button-secondary-hover: #444;
 
-    --button-secondary: #24304f;
-    --button-secondary-hover: #314063;
+    --footer-border: #333;
+    --footer-text: #999;
 
-    --footer-border: #26324f;
-    --footer-text: #94a3b8;
-
-    --accent-color: #38bdf8;
-
-    --secondary-color: #8b5cf6;
-    --pink-color: #ec4899;
+    --accent-color: #00bfff;
 
     --shadow:
-        0 15px 35px rgba(0,0,0,0.3);
+        0 10px 25px rgba(0,0,0,0.25);
+
 }
 
 .light-theme {
@@ -106,14 +103,11 @@ header {
 
     height: 70px;
 
-    background:
-        rgba(11,16,32,0.75);
+    background: var(--header-color);
 
-    backdrop-filter:
-        blur(16px);
+    backdrop-filter: blur(12px);
 
-    border-bottom:
-        1px solid rgba(255,255,255,0.08);
+    border-bottom: 1px solid rgba(255,255,255,0.05);
 
     z-index: 1000;
 
@@ -135,22 +129,14 @@ nav {
 
 }
 
-.logo{
-    font-size:32px;
-    font-weight:bold;
+.logo {
 
-    background: linear-gradient(
-        90deg,
-        #38bdf8,
-        #8b5cf6,
-        #ec4899
-    );
+    font-size: 32px;
 
-    background-clip: text;
-    -webkit-background-clip: text;
+    font-weight: bold;
 
-    color: transparent;
-    -webkit-text-fill-color: transparent;
+    color: var(--accent-color);
+
 }
 
 .nav-links {
@@ -215,19 +201,19 @@ nav {
 
 }
 
-.btn-primary{
-    background:
-        linear-gradient(
-            135deg,
-            #38bdf8,
-            #8b5cf6
-        );
+.btn-primary {
 
-    color:white;
+    background:
+        var(--accent-color);
+
+    color: white;
+
 }
 
-.btn-primary:hover{
-    transform: translateY(-2px);
+.btn-primary:hover {
+
+    opacity: 0.85;
+
 }
 
 .btn-secondary {
@@ -251,18 +237,16 @@ nav {
    COMMON CARD
 ======================= */
 
-.card{
-    background: var(--card-color);
+.card {
 
-    border:
-        1px solid rgba(255,255,255,0.06);
+    background:
+        var(--card-color);
 
-    transition: 0.3s;
-}
+    border-radius: 15px;
 
-.card:hover{
-    transform:
-        translateY(-5px);
+    box-shadow:
+        var(--shadow);
+
 }
 
 /* =======================
@@ -297,43 +281,30 @@ footer p {
 ======================= */
 
 #chat-toggle {
-
-    position: fixed;
-
-    bottom: 20px;
-
-    right: 20px;
-
-    width: 60px;
-
-    height: 60px;
-
-    border-radius: 50%;
-
-    background:
-        linear-gradient(
-            135deg,
-            #38bdf8,
-            #8b5cf6
-        );
-
-    display: flex;
-
-    justify-content: center;
-
-    align-items: center;
-
-    cursor: pointer;
-
-    font-size: 30px;
-
-    box-shadow:
-        0 10px 25px rgba(0,0,0,0.3);
-
-    z-index: 9999;
-
+  /* Giữ nguyên các thuộc tính cũ của bạn */
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  background: var(--accent-color);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  font-size: 30px;
+  z-index: 9999;
+  
+  /* Thêm hiệu ứng pulse */
+  animation: pulse-glow 2s infinite;
 }
 
+@keyframes pulse-glow {
+  0% { box-shadow: 0 0 0 0 rgba(0, 191, 255, 0.7); }
+  70% { box-shadow: 0 0 0 15px rgba(0, 191, 255, 0); }
+  100% { box-shadow: 0 0 0 0 rgba(0, 191, 255, 0); }
+}
 #chat-box {
 
     position: fixed;
@@ -367,11 +338,7 @@ footer p {
     padding: 15px;
 
     background:
-        linear-gradient(
-            135deg,
-            #38bdf8,
-            #8b5cf6
-        );
+        var(--accent-color);
 
     color: white;
 
@@ -430,11 +397,7 @@ footer p {
     cursor: pointer;
 
     background:
-        linear-gradient(
-            135deg,
-            #38bdf8,
-            #8b5cf6
-        );
+        var(--accent-color);
 
     color: white;
 
@@ -471,6 +434,134 @@ footer p {
         rgba(255,255,255,0.05);
 
 }
+
+/* =======================
+SKELETON LOADING
+======================= */
+.skeleton {
+    background: linear-gradient(
+        90deg,
+        var(--card-color) 25%,
+        rgba(255, 255, 255, 0.08) 50%,
+        var(--card-color) 75%
+    );
+    background-size: 200% 100%;
+    animation: shimmer 1.5s infinite;
+    border-radius: 18px;
+}
+
+.light-theme .skeleton {
+    background: linear-gradient(
+        90deg,
+        #e5e5e5 25%,
+        #f5f5f5 50%,
+        #e5e5e5 75%
+    );
+    background-size: 200% 100%;
+}
+
+.skeleton-card {
+    height: 320px;
+}
+
+.skeleton-text {
+    height: 20px;
+    margin-bottom: 10px;
+    border-radius: 8px;
+}
+
+.skeleton-title {
+    height: 28px;
+    width: 60%;
+    margin-bottom: 15px;
+    border-radius: 8px;
+}
+
+@keyframes shimmer {
+    0% { background-position: 200% 0; }
+    100% { background-position: -200% 0; }
+}
+
+/* =======================
+ERROR STATE ĐẸP HƠN
+======================= */
+.error-state {
+    grid-column: 1 / -1;
+    text-align: center;
+    padding: 40px 20px;
+    background: var(--card-color);
+    border-radius: 18px;
+    border: 1px dashed rgba(255, 255, 255, 0.1);
+}
+
+.light-theme .error-state {
+    border: 1px dashed rgba(0, 0, 0, 0.1);
+}
+
+.error-state .error-icon {
+    font-size: 48px;
+    margin-bottom: 15px;
+}
+
+.error-state h3 {
+    color: var(--accent-color);
+    margin-bottom: 10px;
+}
+
+.error-state button {
+    margin-top: 15px;
+    padding: 10px 24px;
+    background: var(--accent-color);
+    color: white;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: 0.3s;
+}
+
+.error-state button:hover {
+    opacity: 0.85;
+    transform: translateY(-2px);
+}
+
+/* =======================
+PULSE CHATBOT
+======================= */
+#chat-toggle {
+    animation: pulse-glow 2.5s infinite;
+}
+
+@keyframes pulse-glow {
+    0% { box-shadow: 0 10px 25px rgba(0,0,0,0.3), 0 0 0 0 rgba(0, 191, 255, 0.6); }
+    70% { box-shadow: 0 10px 25px rgba(0,0,0,0.3), 0 0 0 18px rgba(0, 191, 255, 0); }
+    100% { box-shadow: 0 10px 25px rgba(0,0,0,0.3), 0 0 0 0 rgba(0, 191, 255, 0); }
+}
+
+/* Tắt pulse khi hover để không rối mắt */
+#chat-toggle:hover {
+    animation: none;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.3), 0 0 20px rgba(0, 191, 255, 0.5);
+}
+
+/* Typing indicator cho chatbot */
+.typing-dots span {
+    display: inline-block;
+    width: 8px;
+    height: 8px;
+    margin: 0 2px;
+    background: var(--accent-color);
+    border-radius: 50%;
+    animation: typing-bounce 1.4s infinite ease-in-out both;
+}
+
+.typing-dots span:nth-child(1) { animation-delay: -0.32s; }
+.typing-dots span:nth-child(2) { animation-delay: -0.16s; }
+
+@keyframes typing-bounce {
+    0%, 80%, 100% { transform: scale(0.6); opacity: 0.5; }
+    40% { transform: scale(1); opacity: 1; }
+}   
 
 /* =======================
    MOBILE

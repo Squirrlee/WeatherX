@@ -150,37 +150,26 @@ ${message}
 ========================= */
 
 async function sendMessage() {
-
-    const message =
-        chatInput.value.trim();
-
-    if (!message)
-        return;
-
-    addMessage(
-        message,
-        "user"
-    );
-
+    const message = chatInput.value.trim();
+    if (!message) return;
+    
+    addMessage(message, "user");
     chatInput.value = "";
-
-    addMessage(
-        "⏳ Thinking...",
-        "bot"
-    );
-
-    const response =
-        await getAIResponse(
-            message
-        );
-
-    chatMessages.lastChild.remove();
-
-    addMessage(
-        response,
-        "bot"
-    );
-
+    
+    // Typing indicator với 3 chấm nhảy
+    const typingDiv = document.createElement("div");
+    typingDiv.className = "bot-message";
+    typingDiv.innerHTML = `
+        <span class="typing-dots">
+            <span>●</span><span>●</span><span>●</span>
+        </span>
+    `;
+    chatMessages.appendChild(typingDiv);
+    chatMessages.scrollTop = chatMessages.scrollHeight;
+    
+    const response = await getAIResponse(message);
+    typingDiv.remove();
+    addMessage(response, "bot");
 }
 
 /* =========================

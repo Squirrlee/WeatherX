@@ -28,41 +28,29 @@ const searchResults =
    Search Cities
 ========================= */
 
-async function searchCities(
-    cityName
-) {
-
-    searchResults.innerHTML = `
-        <div class="empty-state">
-            🔄 Searching...
-        </div>
-    `;
-
+async function searchCities(cityName) {
+    // Thay thế text "🔄 Searching..." bằng skeleton
+    searchResults.innerHTML = Array(6)
+        .fill('<div class="skeleton skeleton-card"></div>')
+        .join('');
+    
     try {
-
-        const response =
-            await fetch(
-                `${BASE_URL}/search.json?key=${API_KEY}&q=${cityName}`
-            );
-
-        const data =
-            await response.json();
-
+        const response = await fetch(
+            `${BASE_URL}/search.json?key=${API_KEY}&q=${cityName}`
+        );
+        const data = await response.json();
         renderCities(data);
-
     } catch (error) {
-
         console.error(error);
-
         searchResults.innerHTML = `
-            <div class="empty-state">
-                ❌ Search failed
+            <div class="error-state">
+                <div class="error-icon">❌</div>
+                <h3>Tìm kiếm thất bại</h3>
+                <p>Vui lòng thử lại với từ khóa khác</p>
             </div>
         `;
-
     }
-
-}
+}       
 
 /* =========================
    Render Cities

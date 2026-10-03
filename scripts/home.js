@@ -29,16 +29,6 @@ const rankingContainer =
         "travel-ranking"
     );
 
-const heroSection =
-    document.querySelector(
-        ".hero-section"
-    );
-
-const heroImage =
-    document.querySelector(
-        ".hero-image"
-    );
-
 const travelCities = [
 
     "Tokyo",
@@ -138,6 +128,43 @@ logoutBtn?.addEventListener(
 
     }
 );
+
+function showSkeleton(container, count = 4) {
+    container.innerHTML = Array(count)
+        .fill('<div class="skeleton skeleton-card"></div>')
+        .join('');
+}
+
+function showError(container, title, message, onRetry = null) {
+    container.innerHTML = `
+        <div class="error-state">
+            <div class="error-icon">⚠️</div>
+            <h3>${title}</h3>
+            <p>${message}</p>
+            ${onRetry ? `<button onclick="${onRetry}">🔄 Thử lại</button>` : ''}
+        </div>
+    `;
+}
+
+async function renderFeaturedCities() {
+    showSkeleton(featuredCitiesContainer, 6);
+    try {
+        const weatherResults = await Promise.all(
+            cityList.map(city => getCityWeather(city))
+        );
+        const cards = await Promise.all(
+            weatherResults.map(data => createCityCard(data))
+        );
+        featuredCitiesContainer.innerHTML = cards.join("");
+    } catch {
+        showError(
+            featuredCitiesContainer,
+            "Không thể tải thành phố",
+            "Vui lòng kiểm tra kết nối mạng",
+            "renderFeaturedCities()"
+        );
+    }
+}
 
 async function getCityWeather(
     city
@@ -369,83 +396,6 @@ function getWeatherIcon(
     }
 
     return "wi-day-sunny";
-
-}
-
-function getWeatherTheme(
-    condition
-) {
-
-    condition =
-        condition.toLowerCase();
-
-    if (
-        condition.includes("thunder")
-        ||
-        condition.includes("storm")
-    ) {
-        return "thunder";
-    }
-
-    if (
-        condition.includes("snow")
-    ) {
-        return "snow";
-    }
-
-    if (
-        condition.includes("rain")
-        ||
-        condition.includes("drizzle")
-        ||
-        condition.includes("shower")
-    ) {
-        return "rain";
-    }
-
-    if (
-        condition.includes("fog")
-        ||
-        condition.includes("mist")
-        ||
-        condition.includes("haze")
-    ) {
-        return "fog";
-    }
-
-    if (
-        condition.includes("cloud")
-        ||
-        condition.includes("overcast")
-    ) {
-        return "cloudy";
-    }
-
-    return "sunny";
-
-}
-
-function updateHeroTheme(
-    condition
-) {
-
-    const theme =
-        getWeatherTheme(
-            condition
-        );
-
-    heroSection.classList.remove(
-        "sunny",
-        "cloudy",
-        "rain",
-        "thunder",
-        "fog",
-        "snow"
-    );
-
-    heroSection.classList.add(
-        theme
-    );
 
 }
 
@@ -704,146 +654,52 @@ async function renderFeaturedCities() {
 }
 
 async function renderAQICities() {
-
-    aqiCitiesContainer.innerHTML =
-        "<p>Loading AQI...</p>";
-
+    showSkeleton(aqiCitiesContainer, 6);
     try {
-
-        const results =
-            await Promise.all(
-
-                cityList.map(
-                    city =>
-                        getCityWeather(
-                            city
-                        )
-                )
-
-            );
-
-        aqiCitiesContainer.innerHTML =
-            results
-                .map(
-                    createAQICard
-                )
-                .join("");
-
+        const results = await Promise.all(
+            cityList.map(city => getCityWeather(city))
+        );
+        aqiCitiesContainer.innerHTML = results.map(createAQICard).join("");
+    } catch {
+        showError(
+            aqiCitiesContainer,
+            "Không thể tải AQI",
+            "Vui lòng kiểm tra kết nối mạng",
+            "renderAQICities()"
+        );
     }
-    catch {
-
-        aqiCitiesContainer.innerHTML =
-            `
-            <div class="city-card">
-
-                <div class="city-card-content">
-
-                    <h3>
-                        Failed
-                    </h3>
-
-                    <p>
-                        Cannot load AQI
-                    </p>
-
-                </div>
-
-            </div>
-            `;
-
-    }
-
 }
 
 async function renderFavorites() {
-
-    const favorites =
-        JSON.parse(
-            localStorage.getItem(
-                "favorites"
-            )
-        ) || [];
-
-    if (
-        favorites.length === 0
-    ) {
-
-        favoriteCitiesContainer.innerHTML =
-            `
+    const favorites = JSON.parse(localStorage.getItem("favorites")) || [];
+    if (favorites.length === 0) {
+        favoriteCitiesContainer.innerHTML = `
             <div class="city-card">
-
                 <div class="city-card-content">
-
-                    <h3>
-                        ❤️ No Favorite Cities
-                    </h3>
-
-                    <p>
-                        Add cities you like
-                    </p>
-
+                    <h3>❤️ Chưa có thành phố yêu thích</h3>
+                    <p>Hãy thêm thành phố bạn thích nhé!</p>
                 </div>
-
             </div>
-            `;
-
+        `;
         return;
-
     }
-
+    showSkeleton(favoriteCitiesContainer, favorites.length);
     try {
-
-        const results =
-            await Promise.all(
-
-                favorites.map(
-                    city =>
-                        getCityWeather(
-                            city
-                        )
-                )
-
-            );
-
-        const cards =
-            await Promise.all(
-
-                results.map(
-                    data =>
-                        createCityCard(
-                            data
-                        )
-                )
-
-            );
-
-        favoriteCitiesContainer.innerHTML =
-            cards.join("");
-
+        const results = await Promise.all(
+            favorites.map(city => getCityWeather(city))
+        );
+        const cards = await Promise.all(
+            results.map(data => createCityCard(data))
+        );
+        favoriteCitiesContainer.innerHTML = cards.join("");
+    } catch {
+        showError(
+            favoriteCitiesContainer,
+            "Không thể tải yêu thích",
+            "Vui lòng thử lại sau",
+            "renderFavorites()"
+        );
     }
-    catch {
-
-        favoriteCitiesContainer.innerHTML =
-            `
-            <div class="city-card">
-
-                <div class="city-card-content">
-
-                    <h3>
-                        Failed
-                    </h3>
-
-                    <p>
-                        Cannot load favorites
-                    </p>
-
-                </div>
-
-            </div>
-            `;
-
-    }
-
 }
 
 async function renderMyLocation() {
@@ -868,10 +724,6 @@ async function renderMyLocation() {
 
         const data =
             await response.json();
-
-        updateHeroTheme(
-            data.current.condition.text
-        );
 
         myLocationContainer.innerHTML =
             await createCityCard(
